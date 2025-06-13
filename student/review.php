@@ -622,12 +622,17 @@ include '../includes/stud_header.php';
                                 
                                 <div class="text-center mt-4">
                                     <form method="POST">
-                                        <button type="submit" class="btn btn-success btn-lg px-5 py-3">
-                                            <i class="fas fa-paper-plane me-2"></i>Submit Application
-                                        </button>
-                                        <a href="personal_info.php" class="btn btn-outline-primary btn-lg ms-3 px-5 py-3">
-                                            <i class="fas fa-edit me-2"></i>Edit Information
-                                        </a>
+                                       <div class="d-flex flex-column flex-md-row gap-3 gap-md-4 mt-4">
+    <!-- Submit Button - Full width on mobile, auto on larger screens -->
+    <button type="submit" class="btn btn-success btn-lg px-3 px-md-5 py-2 py-md-3 w-100 w-md-auto">
+        <i class="fas fa-paper-plane me-2"></i>Submit Application
+    </button>
+    
+    <!-- Edit Button - Full width on mobile, auto on larger screens -->
+    <a href="personal_info.php" class="btn btn-outline-primary btn-lg px-3 px-md-5 py-2 py-md-3 w-100 w-md-auto">
+        <i class="fas fa-edit me-2"></i>Edit Information
+    </a>
+</div>
                                     </form>
                                 </div>
                             </div>
