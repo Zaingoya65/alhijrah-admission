@@ -321,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                         <i class="fas fa-info-circle me-3 fs-4"></i>
                                         <div>
                                             <h5 class="alert-heading mb-1">Important Note</h5>
-                                            <p class="mb-0">You must upload your last school result certificate in the Documents section after completing this form.</p>
+                                            <p class="mb-0">You must upload your last school result in the Documents section after completing this form.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -329,20 +329,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                         </div>
                         
                         <!-- Form Navigation -->
-                        <div class="d-flex justify-content-between mt-4">
-                            <a href="address.php" class="btn btn-outline-primary rounded-4">
-                                <i class="fas fa-arrow-left me-2"></i>Previous
-                            </a>
-                            
-                            <div>
-                                <button type="submit" class="btn btn-primary px-4 rounded-4" <?= $editing_locked ? 'disabled' : '' ?>>
-                                    <i class="fas fa-save me-2"></i>Save Information
-                                </button>
-                                <a href="payment.php" class="btn btn-success px-4 ms-2 rounded-4">
-                                    Next<i class="fas fa-arrow-right ms-2"></i>
-                                </a>
-                            </div>
-                        </div>
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 gap-3">
+    <a href="address.php" class="btn btn-outline-primary rounded-4 w-100 w-sm-auto order-1 order-sm-1">
+        <i class="fas fa-arrow-left me-2"></i>Previous
+    </a>
+    
+    <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-sm-auto order-3 order-sm-2 mt-2 mt-sm-0">
+        <button type="submit" class="btn btn-primary px-sm-4 rounded-4 flex-grow-1" <?= $editing_locked ? 'disabled' : '' ?>>
+            <i class="fas fa-save me-2"></i>Save Information
+        </button>
+        <a href="payment.php" class="btn btn-success px-sm-4 rounded-4 flex-grow-1">
+            Next<i class="fas fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+</div>
                     </form>
                 </div>
             </div>
