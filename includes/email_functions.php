@@ -3,20 +3,20 @@ function send_otp_email($email, $name, $otp) {
     $subject = "Your Verification Code";
     $message = "Hello $name,\n\nYour OTP is: $otp\n\nThis code expires in 15 minutes.";
  
-   $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-type: text/plain; charset=UTF-8\r\n";
-  $headers = "From: no-reply@admissoins.alhjrah.pk\r\n";
+  $headers = "MIME-Version: 1.0\r\n";
+$headers .= "Content-type: text/plain; charset=UTF-8\r\n";
+$headers .= "From: no-reply@admissions.alhjrah.pk\r\n";
+
+
 
 
     
-    
-    // Test mail server connection first
-    if (!fsockopen('localhost', 25, $errno, $errstr, 10)) {
-        error_log("Mail server not running: $errstr ($errno)");
-        $_SESSION['debug_otp'] = $otp; // Fallback to debug mode
-        return true;
-    }
-    
+   if (!fsockopen('localhost', 25, $errno, $errstr, 10)) {
+    error_log("Mail server not running: $errstr ($errno)");
+    $_SESSION['debug_otp'] = $otp;
+    return true;
+}
+
     return mail($email, $subject, $message, $headers);
 }
 
