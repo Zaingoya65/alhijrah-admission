@@ -408,20 +408,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                         </div>
                         
                         <!-- Form Navigation -->
-                        <div class="d-flex justify-content-between mt-4">
-                            <a href="personal_info.php" class="btn btn-outline-primary rounded-4">
-                                <i class="fas fa-arrow-left me-2"></i>Previous
-                            </a>
-                            
-                            <div>
-                                <button type="submit" class="btn btn-primary me-2 rounded-4" <?= $editing_locked ? 'disabled' : '' ?>>
-                                    <i class="fas fa-save me-2"></i>Save Information
-                                </button>
-                                <a href="education_info.php" class="btn btn-success rounded-4">
-                                    Next<i class="fas fa-arrow-right ms-2"></i>
-                                </a>
-                            </div>
-                        </div>
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 gap-3">
+    <!-- Previous Button - Full width on mobile, auto on larger screens -->
+    <a href="personal_info.php" class="btn btn-outline-primary rounded-4 w-100 w-sm-auto order-1 order-sm-1">
+        <i class="fas fa-arrow-left me-2"></i>Previous
+    </a>
+    
+    <!-- Action Buttons - Stack vertically on mobile, horizontal on larger screens -->
+    <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-sm-auto order-3 order-sm-2 mt-2 mt-sm-0">
+        <!-- Save Button - Full width on mobile -->
+        <button type="submit" class="btn btn-primary rounded-4 flex-grow-1" <?= $editing_locked ? 'disabled' : '' ?>>
+            <i class="fas fa-save me-2"></i>Save Information
+        </button>
+        
+        <!-- Next Button - Full width on mobile -->
+        <a href="education_info.php" class="btn btn-success rounded-4 flex-grow-1">
+            Next<i class="fas fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+</div>
                     </form>
                 </div>
             </div>
