@@ -18,7 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!preg_match('/^\d{13}$/', $b_form)) {
         $error = "Invalid B-form format. Must be 13 digits.";
     } else {
-        $sql = "SELECT id, b_form, email, name FROM registered_users WHERE b_form = ?";
+       $sql = "SELECT ru.id, ru.b_form, ru.email, sp.full_name 
+        FROM registered_users ru 
+        JOIN student_profiles sp ON ru.id = sp.user_id 
+        WHERE ru.b_form = ?";
+
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('s', $b_form);
         $stmt->execute();
@@ -34,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $update_stmt->bind_param('ssi', $token, $token_expiry, $user['id']);
             $update_stmt->execute();
             
-            if (send_password_reset_email($user['email'], $user['name'], $token)) {
+            if (send_password_reset_email($user['email'], $user['full_name'], $token)) {
                 $success = "Password reset link has been sent to your email.";
             } else {
                 $error = "Failed to send reset email. Please try again.";
