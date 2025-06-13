@@ -144,40 +144,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
 
 <?php include '../includes/stud_header.php'; ?>
 
-<div class="container mt-4">
-    
-    
-    <div class="row">
+<div class="container-fluid mt-4">
+    <div class="row g-4">
+        <!-- Sidebar -->
         <?php include '../includes/sidebar.php'; ?>
-        
+
+        <!-- Main Content -->
         <div class="col-lg-9">
-            <div class="card shadow-sm">
-                <div class="card-header  ">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <!-- Header -->
+                <div class="card-header bg-primary bg-opacity-10 border-bottom">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">
-                            <i class="fas fa-address-card me-2"></i>Contact Information
-                        </h5>
-                        
+                        <div>
+                            <h4 class="mb-1"><i class="fas fa-address-card me-2"></i>Contact Information</h4>
+                            <p class="mb-0 text-muted">Manage your contact details and addresses</p>
+                        </div>
+                        <?php if ($application_status): ?>
+                        <span class="badge bg-<?= 
+                            $application_status === 'Approved' ? 'success' : 
+                            ($application_status === 'Rejected' ? 'danger' : 'warning'); ?>">
+                            Application status: 
+                            <?= htmlspecialchars($application_status) ?>
+                        </span>
+                        <?php endif; ?>
                     </div>
                 </div>
-                
-                <div class="card-body">
+
+                <div class="card-body p-4">
                     <?php if ($editing_locked): ?>
-                        <div class="alert alert-warning d-flex align-items-center">
-                            <i class="fas fa-lock me-3 fs-4"></i>
-                           <div>
+                        <div class="alert alert-warning border-0 rounded-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-lock me-3 fs-4"></i>
+                                <div>
                                     <h5 class="mb-1">Editing Locked</h5>
                                     <p class="mb-0">You have submitted your application. Editing is now disabled.</p>
+                                </div>
                             </div>
                         </div>
                     <?php endif; ?>
                     
                     <?php if (!empty($success)): ?>
-                        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center">
-                            <i class="fas fa-check-circle me-3 fs-4"></i>
-                            <div>
-                                <h5 class="alert-heading mb-1">Success!</h5>
-                                <p class="mb-0"><?= $success ?></p>
+                        <div class="alert alert-success border-0 rounded-4 alert-dismissible fade show">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle me-3 fs-4"></i>
+                                <div>
+                                    <h5 class="alert-heading mb-1">Success!</h5>
+                                    <p class="mb-0"><?= $success ?></p>
+                                </div>
                             </div>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -187,12 +200,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                         <div class="row g-4">
                             <!-- Current Address Section -->
                             <div class="col-md-6">
-                                <div class="card h-100 border-primary">
-                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <div class="card border-0 shadow-sm h-100 rounded-4">
+                                    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
                                         <h6 class="mb-0">
                                             <i class="fas fa-home me-2 text-primary"></i>Current Address
                                         </h6>
-                                        <button type="button" class="btn btn-sm btn-outline-primary copy-address-btn" 
+                                        <button type="button" class="btn btn-sm btn-outline-primary rounded-4 copy-address-btn" 
                                                 data-target="permanent_address" <?= $editing_locked ? 'disabled' : '' ?>>
                                             <i class="fas fa-copy me-1"></i>Copy from Permanent
                                         </button>
@@ -200,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                     <div class="card-body">
                                         <div class="mb-3">
                                             <label for="current_address" class="form-label">Residential Address <span class="text-danger">*</span></label>
-                                            <textarea class="form-control <?= isset($errors['current_address']) ? 'is-invalid' : '' ?>" 
+                                            <textarea class="form-control rounded-4 <?= isset($errors['current_address']) ? 'is-invalid' : '' ?>" 
                                                       id="current_address" name="current_address" rows="3" required
                                                       <?= $editing_locked ? 'readonly' : '' ?>><?= htmlspecialchars($address['current_address'] ?? '') ?></textarea>
                                             <div class="d-flex justify-content-between mt-1">
@@ -220,8 +233,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                             
                             <!-- Permanent Address Section -->
                             <div class="col-md-6">
-                                <div class="card h-100 border-primary">
-                                    <div class="card-header bg-light">
+                                <div class="card border-0 shadow-sm h-100 rounded-4">
+                                    <div class="card-header bg-white border-bottom">
                                         <h6 class="mb-0">
                                             <i class="fas fa-flag me-2 text-primary"></i>Permanent Address
                                         </h6>
@@ -229,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                     <div class="card-body">
                                         <div class="mb-3">
                                             <label for="permanent_address" class="form-label">Home Address <span class="text-danger">*</span></label>
-                                            <textarea class="form-control <?= isset($errors['permanent_address']) ? 'is-invalid' : '' ?>" 
+                                            <textarea class="form-control rounded-4 <?= isset($errors['permanent_address']) ? 'is-invalid' : '' ?>" 
                                                       id="permanent_address" name="permanent_address" rows="3" required
                                                       <?= $editing_locked ? 'readonly' : '' ?>><?= htmlspecialchars($address['permanent_address'] ?? '') ?></textarea>
                                             <div class="d-flex justify-content-between mt-1">
@@ -247,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                         <div class="row g-2">
                                             <div class="col-md-6">
                                                 <label for="city" class="form-label">City <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control <?= isset($errors['city']) ? 'is-invalid' : '' ?>" 
+                                                <input type="text" class="form-control rounded-4 <?= isset($errors['city']) ? 'is-invalid' : '' ?>" 
                                                        id="city" name="city" value="<?= htmlspecialchars($address['city'] ?? '') ?>" 
                                                        <?= $editing_locked ? 'readonly' : '' ?> required>
                                                 <?php if (isset($errors['city'])): ?>
@@ -261,8 +274,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                             <div class="col-md-6">
                                                 <label for="postal_code" class="form-label">Postal Code</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
-                                                    <input type="text" class="form-control <?= isset($errors['postal_code']) ? 'is-invalid' : '' ?>" 
+                                                    <span class="input-group-text bg-primary bg-opacity-10 border-primary"><i class="fas fa-mail-bulk text-primary"></i></span>
+                                                    <input type="text" class="form-control rounded-4 <?= isset($errors['postal_code']) ? 'is-invalid' : '' ?>" 
                                                            id="postal_code" name="postal_code" 
                                                            value="<?= htmlspecialchars($address['postal_code'] ?? '') ?>"
                                                            <?= $editing_locked ? 'readonly' : '' ?>>
@@ -281,8 +294,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                             
                             <!-- Contact Information -->
                             <div class="col-12">
-                                <div class="card border-primary">
-                                    <div class="card-header bg-light">
+                                <div class="card border-0 shadow-sm rounded-4">
+                                    <div class="card-header bg-white border-bottom">
                                         <h6 class="mb-0">
                                             <i class="fas fa-phone-alt me-2 text-primary"></i>Contact Details
                                         </h6>
@@ -292,8 +305,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                             <div class="col-md-6">
                                                 <label for="phone_number" class="form-label">Mobile Number <span class="text-danger">*</span></label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
-                                                    <input type="tel" class="form-control <?= isset($errors['phone_number']) ? 'is-invalid' : '' ?>" 
+                                                    <span class="input-group-text bg-primary bg-opacity-10 border-primary"><i class="fas fa-mobile-alt text-primary"></i></span>
+                                                    <input type="tel" class="form-control rounded-4 <?= isset($errors['phone_number']) ? 'is-invalid' : '' ?>" 
                                                            id="phone_number" name="phone_number" 
                                                            value="<?= htmlspecialchars($address['phone_number'] ?? '') ?>" 
                                                            placeholder="03XXXXXXXXX" required
@@ -309,7 +322,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                             </div>
                                             
                                             <div class="col-md-6">
-                                                <div class="form-check form-switch">
+                                                <div class="form-check form-switch mt-4 pt-2">
                                                     <input class="form-check-input" type="checkbox" id="whatsapp_available" 
                                                            name="whatsapp_available" <?= isset($address['whatsapp_available']) && $address['whatsapp_available'] ? 'checked' : '' ?>
                                                            <?= $editing_locked ? 'disabled' : '' ?>>
@@ -325,8 +338,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                             
                             <!-- Emergency Contact -->
                             <div class="col-12">
-                                <div class="card border-primary">
-                                    <div class="card-header bg-light">
+                                <div class="card border-0 shadow-sm rounded-4">
+                                    <div class="card-header bg-white border-bottom">
                                         <h6 class="mb-0">
                                             <i class="fas fa-user-md me-2 text-primary"></i>Emergency Contact Information
                                         </h6>
@@ -336,8 +349,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                             <div class="col-md-4">
                                                 <label for="emergency_contact" class="form-label">Full Name <span class="text-danger">*</span></label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                                    <input type="text" class="form-control <?= isset($errors['emergency_contact']) ? 'is-invalid' : '' ?>" 
+                                                    <span class="input-group-text bg-primary bg-opacity-10 border-primary"><i class="fas fa-user text-primary"></i></span>
+                                                    <input type="text" class="form-control rounded-4 <?= isset($errors['emergency_contact']) ? 'is-invalid' : '' ?>" 
                                                            id="emergency_contact" name="emergency_contact" 
                                                            value="<?= htmlspecialchars($address['emergency_contact'] ?? '') ?>" required
                                                            <?= $editing_locked ? 'readonly' : '' ?>>
@@ -352,7 +365,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                             
                                             <div class="col-md-4">
                                                 <label for="emergency_relation" class="form-label">Relationship <span class="text-danger">*</span></label>
-                                                <select class="form-select <?= isset($errors['emergency_relation']) ? 'is-invalid' : '' ?>" 
+                                                <select class="form-select rounded-4 <?= isset($errors['emergency_relation']) ? 'is-invalid' : '' ?>" 
                                                         id="emergency_relation" name="emergency_relation" required
                                                         <?= $editing_locked ? 'disabled' : '' ?>>
                                                     <option value="">Select Relationship</option>
@@ -374,8 +387,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                             <div class="col-md-4">
                                                 <label for="emergency_phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                                    <input type="tel" class="form-control <?= isset($errors['emergency_phone']) ? 'is-invalid' : '' ?>" 
+                                                    <span class="input-group-text bg-primary bg-opacity-10 border-primary"><i class="fas fa-phone text-primary"></i></span>
+                                                    <input type="tel" class="form-control rounded-4 <?= isset($errors['emergency_phone']) ? 'is-invalid' : '' ?>" 
                                                            id="emergency_phone" name="emergency_phone" 
                                                            value="<?= htmlspecialchars($address['emergency_phone'] ?? '') ?>" 
                                                            placeholder="03XXXXXXXXX" required
@@ -396,15 +409,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                         
                         <!-- Form Navigation -->
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="personal_info.php" class="btn btn-outline-primary">
+                            <a href="personal_info.php" class="btn btn-outline-primary rounded-4">
                                 <i class="fas fa-arrow-left me-2"></i>Previous
                             </a>
                             
                             <div>
-                                <button type="submit" class="btn btn-primary me-2" <?= $editing_locked ? 'disabled' : '' ?>>
+                                <button type="submit" class="btn btn-primary me-2 rounded-4" <?= $editing_locked ? 'disabled' : '' ?>>
                                     <i class="fas fa-save me-2"></i>Save Information
                                 </button>
-                                <a href="education_info.php" class="btn btn-success">
+                                <a href="education_info.php" class="btn btn-success rounded-4">
                                     Next<i class="fas fa-arrow-right ms-2"></i>
                                 </a>
                             </div>

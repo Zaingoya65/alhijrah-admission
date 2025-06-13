@@ -43,11 +43,11 @@ function send_password_reset_email($email, $token) {
         <title>Password Reset</title>
     </head>
     <body>
-        <h2>Hello,</h2>
+        <h3>Assala Walekum!,</h3>
         <p>We received a request to reset your password.</p>
         <p>Click here to reset to reset password: <a href='$reset_link'>Click Here</a></p>
         <p> or paste this link in broswer</p>
-         <p>Click here to reset to reset password: <a href='$reset_link'>$reset_link</a></p>
+         <p><a href='$reset_link'>$reset_link</a></p>
         <p>This link expires in 1 hour.</p>
     </body>
     </html>
