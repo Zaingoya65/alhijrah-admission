@@ -1,0 +1,289 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.logo {
+    max-height: 120px;
+    margin-bottom: 20px;
+}
+
+.nav-pills .nav-link.active {
+    background-color: var(--primary-color);
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: none;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #1a252f;
+    border-color: #1a252f;
+}
+
+.vision-card {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.vision-item {
+    text-align: center;
+    padding: 15px;
+    flex: 1;
+    min-width: 150px;
+}
+
+.form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.progress {
+    height: 25px;
+    border-radius: 12px;
+}
+
+.progress-bar {
+    border-radius: 12px;
+}
+
+
+.vision-icon {
+    transition: transform 0.3s ease;
+}
+
+.vision-icon:hover {
+    transform: scale(1.1);
+}
+
+
+ .top-bar a.login-btn,
+    .top-bar a.register-btn {
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        text-decoration: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .top-bar a.login-btn {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        margin-right: 0.5rem;
+    }
+
+    .top-bar a.register-btn {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .top-bar a.login-btn:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+    }
+
+    .top-bar a.register-btn:hover {
+        background-color: #e0a800;
+        color: #fff;
+    }
+
+    
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        background-color: #ffffff;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .form-control {
+        border-radius: 6px;
+    }
+
+    .btn-primary {
+        font-weight: 500;
+    }
+
+    .toggle-btn {
+        background: none;
+        border: none;
+    }
+
+    .form-branding {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-branding img {
+        max-height: 60px;
+    }
+
+    .trust-name {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #333;
+        margin-top: 0.5rem;
+    }
+    .nav-link {
+    transition: all 0.2s ease;
+}
+.nav-link:hover {
+    background-color: #f0f0f0;
+    border-radius: 6px;
+}
+
+    /* Responsive adjustments */
+@media (max-width: 768px) {
+    .vision-item {
+        min-width: 100%;
+        margin-bottom: 15px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    .top-bar{
+        display: none;
+    }
+}
+/* Container */
+.custom-responsive-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem; /* mt-4 */
+  gap: 1rem; /* gap-3 */
+}
+
+@media (min-width: 768px) {
+  .custom-responsive-container {
+    flex-direction: row;
+  }
+}
+
+/* Back Button */
+.custom-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #6c757d;
+  color: #6c757d;
+  background-color: transparent;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  width: 50%;
+  text-decoration: none;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .custom-back-button {
+    width: auto;
+  }
+}
+
+/* Group for Save/Next buttons */
+.custom-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* gap-2 */
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  .custom-button-group {
+    flex-direction: row;
+    width: auto;
+  }
+}
+
+/* Save Button */
+.custom-save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0d6efd;
+  color: white;
+  border: 1px solid #0d6efd;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.375rem;
+  width: 50%;
+  cursor: pointer;
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  .custom-save-button {
+    width: auto;
+  }
+}
+
+/* Next Button */
+.custom-next-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #0d6efd;
+  color: #0d6efd;
+  background-color: transparent;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  width: 50%;
+  text-decoration: none;
+  text-align: center;
+}
+
+@media (min-width: 576px) {
+  .custom-next-button {
+    width: auto;
+    margin-left: 0.5rem; /* ms-sm-2 */
+  }
+}
+
+/* Icon spacing */
+.icon-margin-end {
+  margin-right: 0.25rem;
+}
+
+.icon-margin-start {
+  margin-left: 0.25rem;
+}
+
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%; /* This makes it circular */
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+

@@ -1,0 +1,8 @@
+<FilesMatch "\.(pdf)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Deny script execution
+RemoveHandler .php .phtml .php3 .php4 .php5
+php_flag engine off
