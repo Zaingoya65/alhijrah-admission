@@ -12,29 +12,20 @@ $headers .= "From: no-reply@admissions.alhjrah.pk\r\n";
 
 
     
-   if (!fsockopen('localhost', 25, $errno, $errstr, 10)) {
+ if (!fsockopen('localhost', 25, $errno, $errstr, 10)) {
     error_log("Mail server not running: $errstr ($errno)");
-    $_SESSION['debug_otp'] = $otp;
-    return true;
-    }
+    // Consider returning false or displaying an error
+    return false;
+}
 
-    return mail($email, $subject, $message, $headers);
 
-    $result = mail($email, $subject, $message, $headers);
+   $result = mail($email, $subject, $message, $headers);
 if (!$result) {
     error_log("Failed to send email to $email");
 }
+return $result;
 
 }
-
-// function send_password_reset_email($email, $name, $token) {
-//     $reset_link = "http://localhost/reset-password.php?token=$token";
-//     $subject = "Password Reset Request";
-//     $message = "Hello $name,\n\nReset your password here: $reset_link\n\nLink expires in 1 hour.";
-//     $headers = "From: no-reply@localhost\r\n";
-    
-//     return mail($email, $subject, $message, $headers);
-// }
 
 function send_password_reset_email($email, $name, $token) {
     $reset_link = "https://moccasin-tiger-993742.hostingersite.com/forgot-password.php?token=$token";
