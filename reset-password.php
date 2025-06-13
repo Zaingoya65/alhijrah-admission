@@ -52,8 +52,10 @@ if ($token_valid && $_SERVER['REQUEST_METHOD'] == 'POST') {
         $update_stmt->bind_param('ss', $hashed_password, $token);
         $update_stmt->execute();
         
-        $success = "Your password has been reset successfully. You can now <a href='login.php'>login</a> with your new password.";
+        $success = "Your password has been reset successfully. Redirecting to login...";
         header("Refresh: 5; URL=login.php");
+        ob_end_flush(); 
+
 
     }
 }
