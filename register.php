@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'includes/config.php';
 include 'includes/auth.php';
 include 'includes/email_functions.php'; // Add this line
@@ -57,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $verification_token_expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
                 $verification_link = "https://moccasin-tiger-993742.hostingersite.com/verify-account.php?token=$verification_token";
-                // send_otp_email($formData['email'], $name, $otp, $verification_link);
+                // send_otp_email($formData['email'], $otp, $verification_link);
 
 
                 
