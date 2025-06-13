@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['id'] = $user_id;
                 unset($_SESSION['verify_user_id']);
                 
-                header("Location: student/dashboard.php");
+                header("Location: login.php");
                 exit();
             } else {
                 $error = "Invalid or expired OTP.";
