@@ -19,12 +19,19 @@ $stmt->bind_param('s', $token);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows !== 1 || strtotime($result->fetch_assoc()['reset_token_expiry']) < time()) {
+if ($result->num_rows !== 1) {
     $error = "Invalid or expired reset token.";
     $token_valid = false;
 } else {
-    $token_valid = true;
+    $user = $result->fetch_assoc();
+    if (strtotime($user['reset_token_expiry']) < time()) {
+        $error = "Reset token has expired.";
+        $token_valid = false;
+    } else {
+        $token_valid = true;
+    }
 }
+
 $stmt->close();
 
 if ($token_valid && $_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -46,6 +53,8 @@ if ($token_valid && $_SERVER['REQUEST_METHOD'] == 'POST') {
         $update_stmt->execute();
         
         $success = "Your password has been reset successfully. You can now <a href='login.php'>login</a> with your new password.";
+        header("Refresh: 5; URL=login.php");
+
     }
 }
 
