@@ -50,18 +50,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($stmt->execute()) {
                 $user_id = $stmt->insert_id;
                 
-                // Generate and store OTP
                 $otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
                 $otp_expiry = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+
+                $verification_token = bin2hex(random_bytes(16)); // 32-character token
+                $verification_token_expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+                $verification_link = "https://moccasin-tiger-993742.hostingersite.com/verify-account.php?token=$verification_token";
+                send_otp_email($formData['email'], $name, $otp, $verification_link);
+
+
                 
-                $update_sql = "UPDATE registered_users SET otp = ?, otp_expiry = ? WHERE id = ?";
+                $update_sql = "UPDATE registered_users 
+                SET otp = ?, otp_expiry = ?, verification_token = ?, verification_token_expiry = ? 
+                WHERE id = ?";
                 $update_stmt = $conn->prepare($update_sql);
-                $update_stmt->bind_param('ssi', $otp, $otp_expiry, $user_id);
+                $update_stmt->bind_param('ssssi', $otp, $otp_expiry, $verification_token, $verification_token_expiry, $user_id);
                 $update_stmt->execute();
+
                 
                 // Send OTP email
-                $name = "User"; // You might want to collect name during registration
-                if (send_otp_email($formData['email'], $name, $otp)) {
+              
+                if (send_otp_email($formData['email'], $otp)) {
                     $_SESSION['verify_user_id'] = $user_id;
                     header("Location: verify-account.php");
                     exit();

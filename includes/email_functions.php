@@ -1,31 +1,36 @@
 <?php
-function send_otp_email($email, $otp) {
-    $subject = "Your Verification Code";
-    $message = "\nYour OTP is: $otp\n\nThis code expires in 15 minutes.";
- 
-  $headers = "MIME-Version: 1.0\r\n";
-$headers .= "Content-type: text/html; charset=UTF-8\r\n";
-$headers .= "From: no-reply@admissions.alhjrah.pk\r\n";
+function send_otp_email($email, $otp, $verification_link) {
+    $subject = "Verify Your Account – OTP and Link Inside";
+    $message = "
+    <html>
+    <head><title>Email Verification</title></head>
+    <body>
+        <h2>Aoa,</h2>
+        <br>
+        <h4>Welcome Al-Hijrah trust portal </h4>
+        <p>Your One-Time Password (OTP) is: <strong style='font-size: 18px;'>$otp</strong></p>
+        <p><em>This code will expire in 15 minutes.</em></p>
+        <hr>
+        <p>If you prefer, click the link below to verify your account:</p>
+        <p><a href='$verification_link'>$verification_link</a></p>
+        <p><em>This link will expire in 1 hour.</em></p>
+        <br>
+        <p>If you didn't register on our site, please ignore this email.</p>
+    </body>
+    </html>
+    ";
 
+    $headers = "MIME-Version: 1.0\r\n";
+    $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+    $headers .= "From: no-reply@admissions.alhjrah.pk\r\n";
 
-
-
-
-    
-//  if (!fsockopen('localhost', 25, $errno, $errstr, 10)) {
-//     error_log("Mail server not running: $errstr ($errno)");
-//     // Consider returning false or displaying an error
-//     return false;
-// }
-
-
-   $result = mail($email, $subject, $message, $headers);
-if (!$result) {
-    error_log("Failed to send email to $email");
+    $result = mail($email, $subject, $message, $headers);
+    if (!$result) {
+        error_log("Failed to send email to $email");
+    }
+    return $result;
 }
-return $result;
 
-}
 
 function send_password_reset_email($email, $name, $token) {
     $reset_link = "https://moccasin-tiger-993742.hostingersite.com/forgot-password.php?token=$token";
