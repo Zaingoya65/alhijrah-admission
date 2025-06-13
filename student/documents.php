@@ -284,8 +284,6 @@ include "../includes/stud_header.php";
                         </div>
                     </div>
 
-                 
-
                     <!-- Document Upload Form -->
                      <h5 class="py-2">Please seclect all Required documents then upload</h5> 
                     <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
@@ -367,15 +365,14 @@ include "../includes/stud_header.php";
                         </div>
 
                         <!-- Form Actions -->
-                        <div class="d-flex justify-content-between mt-4">
-                        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-4">
-    <!-- Back Button - Left aligned -->
+                       <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-4">
+    <!-- Back Button - Full width on mobile, auto on desktop -->
     <a href="education_info.php" class="btn btn-outline-secondary px-3 px-md-4 rounded-4 w-100 w-md-auto order-1">
         <i class="fas fa-arrow-left me-2"></i> Back
     </a>
     
-    <!-- Action Buttons - Right aligned, stack on mobile -->
-    <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto order-2">
+    <!-- Action Buttons - Stack on mobile, horizontal on desktop -->
+    <div class="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto order-2">
         <!-- Upload Button -->
         <button type="submit" 
                 class="btn btn-primary px-3 px-md-4 rounded-4 flex-grow-1"
@@ -384,7 +381,7 @@ include "../includes/stud_header.php";
         </button>
         
         <!-- Review Button -->
-        <a href="review.php" class="btn btn-success px-3 px-md-4 rounded-4 flex-grow-1 ms-sm-2 mt-0">
+        <a href="review.php" class="btn btn-success px-3 px-md-4 rounded-4 flex-grow-1 mt-2 mt-md-0 ms-md-2">
             <i class="fas fa-check-circle me-2"></i> Review Application
         </a>
     </div>
