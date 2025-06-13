@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("Location: index.php"); // Redirect to login page
+    exit();
+}
+
 $page_title = "Registered Users";
 include 'includes/admin_header.php';
 
