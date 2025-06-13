@@ -2,11 +2,13 @@
 function send_otp_email($email, $name, $otp) {
     $subject = "Your Verification Code";
     $message = "Hello $name,\n\nYour OTP is: $otp\n\nThis code expires in 15 minutes.";
-    $headers = "From: no-reply@localhost\r\n";
+ 
+   $headers = "MIME-Version: 1.0\r\n";
+    $headers .= "Content-type: text/plain; charset=UTF-8\r\n";
+  $headers = "From: no-reply@admissoins.alhjrah.pk\r\n";
+
+
     
-    // Enable error logging
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
     
     // Test mail server connection first
     if (!fsockopen('localhost', 25, $errno, $errstr, 10)) {
@@ -28,7 +30,7 @@ function send_otp_email($email, $name, $otp) {
 // }
 
 function send_password_reset_email($email, $name, $token) {
-    $reset_link = "http://localhost/reset-password.php?token=$token";
+    $reset_link = "https://moccasin-tiger-993742.hostingersite.com/forgot-password.php?token=$token";
     $subject = "Password Reset Request";
     
     $message = "
@@ -47,7 +49,8 @@ function send_password_reset_email($email, $name, $token) {
     
     $headers = "MIME-Version: 1.0\r\n";
     $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-    $headers .= "From: no-reply@localhost\r\n";
+    $headers = "From: no-reply@admissions.alhjrah.pk\r\n";
+
     
     return mail($email, $subject, $message, $headers);
 }
