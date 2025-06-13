@@ -4,8 +4,9 @@ function send_otp_email($email, $name, $otp) {
     $message = "Hello $name,\n\nYour OTP is: $otp\n\nThis code expires in 15 minutes.";
  
   $headers = "MIME-Version: 1.0\r\n";
-$headers .= "Content-type: text/plain; charset=UTF-8\r\n";
+$headers .= "Content-type: text/html; charset=UTF-8\r\n";
 $headers .= "From: no-reply@admissions.alhjrah.pk\r\n";
+
 
 
 
@@ -15,9 +16,15 @@ $headers .= "From: no-reply@admissions.alhjrah.pk\r\n";
     error_log("Mail server not running: $errstr ($errno)");
     $_SESSION['debug_otp'] = $otp;
     return true;
-}
+    }
 
     return mail($email, $subject, $message, $headers);
+
+    $result = mail($email, $subject, $message, $headers);
+if (!$result) {
+    error_log("Failed to send email to $email");
+}
+
 }
 
 // function send_password_reset_email($email, $name, $token) {
@@ -47,9 +54,10 @@ function send_password_reset_email($email, $name, $token) {
     </html>
     ";
     
-    $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-    $headers = "From: no-reply@admissions.alhjrah.pk\r\n";
+ $headers = "MIME-Version: 1.0\r\n";
+$headers .= "Content-type: text/html; charset=UTF-8\r\n";
+$headers .= "From: no-reply@admissions.alhjrah.pk\r\n";
+
 
     
     return mail($email, $subject, $message, $headers);
