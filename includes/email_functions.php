@@ -5,8 +5,7 @@ function send_otp_email($email, $otp, $verification_link) {
     <html>
     <head><title>Email Verification</title></head>
     <body>
-        <h2>Aoa,</h2>
-        <br>
+        <h3>Assala Walekum!,</h3>
         <h4>Welcome Al-Hijrah trust portal </h4>
         <p>Your One-Time Password (OTP) is: <strong style='font-size: 18px;'>$otp</strong></p>
         <p><em>This code will expire in 15 minutes.</em></p>
@@ -16,6 +15,7 @@ function send_otp_email($email, $otp, $verification_link) {
         <p><em>This link will expire in 1 hour.</em></p>
         <br>
         <p>If you didn't register on our site, please ignore this email.</p>
+        <p>Thank You </p>
     </body>
     </html>
     ";
