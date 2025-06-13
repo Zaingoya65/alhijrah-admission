@@ -12,11 +12,11 @@ $headers .= "From: no-reply@admissions.alhjrah.pk\r\n";
 
 
     
- if (!fsockopen('localhost', 25, $errno, $errstr, 10)) {
-    error_log("Mail server not running: $errstr ($errno)");
-    // Consider returning false or displaying an error
-    return false;
-}
+//  if (!fsockopen('localhost', 25, $errno, $errstr, 10)) {
+//     error_log("Mail server not running: $errstr ($errno)");
+//     // Consider returning false or displaying an error
+//     return false;
+// }
 
 
    $result = mail($email, $subject, $message, $headers);
