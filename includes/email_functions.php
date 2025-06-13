@@ -1,7 +1,7 @@
 <?php
-function send_otp_email($email, $name, $otp) {
+function send_otp_email($email, $otp) {
     $subject = "Your Verification Code";
-    $message = "Hello $name,\n\nYour OTP is: $otp\n\nThis code expires in 15 minutes.";
+    $message = "\nYour OTP is: $otp\n\nThis code expires in 15 minutes.";
  
   $headers = "MIME-Version: 1.0\r\n";
 $headers .= "Content-type: text/html; charset=UTF-8\r\n";
