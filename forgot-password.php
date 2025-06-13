@@ -31,19 +31,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
-            $token = bin2hex(random_bytes(32));
-            $token_expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
-            
-            $update_sql = "UPDATE registered_users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?";
+            $token = bin2hex(random_bytes(16));
+            $expiry = date("Y-m-d H:i:s", strtotime('+1 hour'));
+
+            $update_sql = "UPDATE registered_users SET reset_token = ?, reset_token_expiry = ? WHERE email = ?";
             $update_stmt = $conn->prepare($update_sql);
-            $update_stmt->bind_param('ssi', $token, $token_expiry, $user['id']);
+            $update_stmt->bind_param('sss', $token, $expiry, $user['email']); // all are strings
             $update_stmt->execute();
+
             $name = $user['full_name'] ?? 'User';
-            if (send_password_reset_email($user['email'], $user['full_name'], $token)) {
-                $success = "Password reset link has been sent to your email.";
+            if (send_password_reset_email($user['email'], $token)) {
+                 $success = "Password reset link has been sent to your email.";
             } else {
-                $error = "Failed to send reset email. Please try again.";
-            }
+                      $error = "Failed to send reset email. Please try again.";
+                }
+
             
             $update_stmt->close();
         } else {
