@@ -129,37 +129,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
 ?>
 
 <?php include '../includes/stud_header.php'; ?>
-
-<div class="container mt-4">
-    <div class="row">
+<div class="container-fluid mt-4">
+    <div class="row g-4">
+        <!-- Sidebar -->
         <?php include '../includes/sidebar.php'; ?>
-        
+
+        <!-- Main Content -->
         <div class="col-lg-9">
-            <div class="card shadow-sm">
-                <div class="card-header ">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <!-- Header -->
+                <div class="card-header bg-primary bg-opacity-10 border-bottom">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">
-                            <i class="fas fa-graduation-cap me-2"></i>Education Information
-                        </h5>
-                       
+                        <div>
+                            <h4 class="mb-1"><i class="fas fa-graduation-cap me-2"></i>Education Information</h4>
+                            <p class="mb-0 text-muted">Provide your academic background details</p>
+                        </div>
+                        <?php if ($application_status): ?>
+                        <span class="badge bg-<?= 
+                            $application_status === 'Approved' ? 'success' : 
+                            ($application_status === 'Rejected' ? 'danger' : 'warning'); ?>">
+                            Application status: 
+                            <?= htmlspecialchars($application_status) ?>
+                        </span>
+                        <?php endif; ?>
                     </div>
                 </div>
-                
-                <div class="card-body">
+
+                <div class="card-body p-4">
                     <?php if ($editing_locked): ?>
-                       <div class="alert alert-warning d-flex align-items-center">
-                            <i class="fas fa-lock me-3 fs-4"></i>
-                           <div>
+                        <div class="alert alert-warning border-0 rounded-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-lock me-3 fs-4"></i>
+                                <div>
                                     <h5 class="mb-1">Editing Locked</h5>
                                     <p class="mb-0">You have submitted your application. Editing is now disabled.</p>
+                                </div>
                             </div>
                         </div>
                     <?php endif; ?>
                     
                     <?php if (!empty($success)): ?>
-                        <div class="alert alert-success alert-dismissible fade show">
-                            <i class="fas fa-check-circle me-2"></i>
-                            <?= $success ?>
+                        <div class="alert alert-success border-0 rounded-4 alert-dismissible fade show">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle me-3 fs-4"></i>
+                                <div>
+                                    <h5 class="alert-heading mb-1">Success!</h5>
+                                    <p class="mb-0"><?= $success ?></p>
+                                </div>
+                            </div>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     <?php endif; ?>
@@ -168,8 +185,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                         <div class="row g-4">
                             <!-- School Information Section -->
                             <div class="col-12">
-                                <div class="card border-primary">
-                                    <div class="card-header bg-light">
+                                <div class="card border-0 shadow-sm rounded-4">
+                                    <div class="card-header bg-white border-bottom">
                                         <h6 class="mb-0">
                                             <i class="fas fa-school me-2 text-primary"></i> School Details
                                         </h6>
@@ -178,13 +195,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <label for="last_school_name" class="form-label">School Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control <?= isset($errors['last_school_name']) ? 'is-invalid' : '' ?>" 
+                                                <input type="text" class="form-control rounded-4 <?= isset($errors['last_school_name']) ? 'is-invalid' : '' ?>" 
                                                        id="last_school_name" name="last_school_name" 
                                                        value="<?= htmlspecialchars($education['last_school_name'] ?? '') ?>" 
                                                        <?= $editing_locked ? 'readonly' : '' ?> required>
                                                 <?php if (isset($errors['last_school_name'])): ?>
-                                                    <div class="invalid-feedback">
-                                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                                    <div class="invalid-feedback d-flex align-items-center">
+                                                        <i class="fas fa-exclamation-circle me-2"></i>
                                                         <?= $errors['last_school_name'] ?>
                                                     </div>
                                                 <?php endif; ?>
@@ -192,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                             
                                             <div class="col-md-6">
                                                 <label for="last_school_type" class="form-label">School Type <span class="text-danger">*</span></label>
-                                                <select class="form-select <?= isset($errors['last_school_type']) ? 'is-invalid' : '' ?>" 
+                                                <select class="form-select rounded-4 <?= isset($errors['last_school_type']) ? 'is-invalid' : '' ?>" 
                                                         id="last_school_type" name="last_school_type" 
                                                         <?= $editing_locked ? 'disabled' : '' ?> required>
                                                     <option value="">Select School Type</option>
@@ -202,8 +219,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                                     <option value="Other">Other</option>
                                                 </select>
                                                 <?php if (isset($errors['last_school_type'])): ?>
-                                                    <div class="invalid-feedback">
-                                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                                    <div class="invalid-feedback d-flex align-items-center">
+                                                        <i class="fas fa-exclamation-circle me-2"></i>
                                                         <?= $errors['last_school_type'] ?>
                                                     </div>
                                                 <?php endif; ?>
@@ -212,12 +229,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                             
                                             <div class="col-12">
                                                 <label for="last_school_address" class="form-label">School Address <span class="text-danger">*</span></label>
-                                                <textarea class="form-control <?= isset($errors['last_school_address']) ? 'is-invalid' : '' ?>" 
+                                                <textarea class="form-control rounded-4 <?= isset($errors['last_school_address']) ? 'is-invalid' : '' ?>" 
                                                           id="last_school_address" name="last_school_address" rows="3"
                                                           <?= $editing_locked ? 'readonly' : '' ?> required><?= htmlspecialchars($education['last_school_address'] ?? '') ?></textarea>
                                                 <?php if (isset($errors['last_school_address'])): ?>
-                                                    <div class="invalid-feedback">
-                                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                                    <div class="invalid-feedback d-flex align-items-center">
+                                                        <i class="fas fa-exclamation-circle me-2"></i>
                                                         <?= $errors['last_school_address'] ?>
                                                     </div>
                                                 <?php endif; ?>
@@ -229,8 +246,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                             
                             <!-- Academic Details Section -->
                             <div class="col-12">
-                                <div class="card border-primary">
-                                    <div class="card-header bg-light">
+                                <div class="card border-0 shadow-sm rounded-4">
+                                    <div class="card-header bg-white border-bottom">
                                         <h6 class="mb-0">
                                             <i class="fas fa-award me-2 text-primary"></i>Academic Details
                                         </h6>
@@ -239,16 +256,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                         <div class="row g-3">
                                             <div class="col-md-4">
                                                 <label for="last_school_class" class="form-label">Last Class Attended <span class="text-danger">*</span></label>
-                                                <select class="form-select <?= isset($errors['last_school_class']) ? 'is-invalid' : '' ?>" 
+                                                <select class="form-select rounded-4 <?= isset($errors['last_school_class']) ? 'is-invalid' : '' ?>" 
                                                         id="last_school_class" name="last_school_class" 
                                                         <?= $editing_locked ? 'disabled' : '' ?> required>
                                                     <option value="">Select Class</option>
                                                     <option value="7th" <?= ($education['last_school_class'] ?? '') == '7th' ? 'selected' : '' ?>>7th Class</option>
                                                     <option value="6th" <?= ($education['last_school_class'] ?? '') == '6th' ? 'selected' : '' ?>>6th Class</option>
-                                                  </select>
+                                                </select>
                                                 <?php if (isset($errors['last_school_class'])): ?>
-                                                    <div class="invalid-feedback">
-                                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                                    <div class="invalid-feedback d-flex align-items-center">
+                                                        <i class="fas fa-exclamation-circle me-2"></i>
                                                         <?= $errors['last_school_class'] ?>
                                                     </div>
                                                 <?php endif; ?>
@@ -258,15 +275,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                                 <label for="last_school_result" class="form-label">Result (%) <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <input type="number" step="0.01" min="0" max="100" 
-                                                           class="form-control <?= isset($errors['last_school_result']) ? 'is-invalid' : '' ?>" 
+                                                           class="form-control rounded-4 <?= isset($errors['last_school_result']) ? 'is-invalid' : '' ?>" 
                                                            id="last_school_result" name="last_school_result" 
                                                            value="<?= htmlspecialchars($education['last_school_result'] ?? '') ?>" 
                                                            <?= $editing_locked ? 'readonly' : '' ?> required>
-                                                    <span class="input-group-text">%</span>
+                                                    <span class="input-group-text bg-primary bg-opacity-10 border-primary">%</span>
                                                 </div>
                                                 <?php if (isset($errors['last_school_result'])): ?>
-                                                    <div class="invalid-feedback d-block">
-                                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                                    <div class="invalid-feedback d-flex align-items-center">
+                                                        <i class="fas fa-exclamation-circle me-2"></i>
                                                         <?= $errors['last_school_result'] ?>
                                                     </div>
                                                 <?php endif; ?>
@@ -275,7 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                             
                                             <div class="col-md-4">
                                                 <label for="last_school_medium" class="form-label">Medium of Instruction <span class="text-danger">*</span></label>
-                                                <select class="form-select <?= isset($errors['last_school_medium']) ? 'is-invalid' : '' ?>" 
+                                                <select class="form-select rounded-4 <?= isset($errors['last_school_medium']) ? 'is-invalid' : '' ?>" 
                                                         id="last_school_medium" name="last_school_medium" 
                                                         <?= $editing_locked ? 'disabled' : '' ?> required>
                                                     <option value="">Select Medium</option>
@@ -286,8 +303,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                                     <option value="Balochi" <?= ($education['last_school_medium'] ?? '') == 'Balochi' ? 'selected' : '' ?>>Balochi</option>
                                                 </select>
                                                 <?php if (isset($errors['last_school_medium'])): ?>
-                                                    <div class="invalid-feedback">
-                                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                                    <div class="invalid-feedback d-flex align-items-center">
+                                                        <i class="fas fa-exclamation-circle me-2"></i>
                                                         <?= $errors['last_school_medium'] ?>
                                                     </div>
                                                 <?php endif; ?>
@@ -299,11 +316,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                             
                             <!-- Important Note -->
                             <div class="col-12">
-                                <div class="alert alert-info">
-                                    <div class="d-flex">
-                                        <i class="fas fa-info-circle fa-2x me-3 mt-1"></i>
+                                <div class="alert alert-info border-0 rounded-4">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-info-circle me-3 fs-4"></i>
                                         <div>
-                                            <h6 class="alert-heading">Important Note</h6>
+                                            <h5 class="alert-heading mb-1">Important Note</h5>
                                             <p class="mb-0">You must upload your last school result certificate in the Documents section after completing this form.</p>
                                         </div>
                                     </div>
@@ -313,15 +330,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                         
                         <!-- Form Navigation -->
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="address.php" class="btn btn-outline-primary">
-                            <i class="fas fa-arrow-left me-2"></i>Previous
+                            <a href="address.php" class="btn btn-outline-primary rounded-4">
+                                <i class="fas fa-arrow-left me-2"></i>Previous
                             </a>
                             
                             <div>
-                                <button type="submit" class="btn btn-primary px-4" <?= $editing_locked ? 'disabled' : '' ?>>
+                                <button type="submit" class="btn btn-primary px-4 rounded-4" <?= $editing_locked ? 'disabled' : '' ?>>
                                     <i class="fas fa-save me-2"></i>Save Information
                                 </button>
-                                <a href="payment.php" class="btn btn-success px-4 ms-2">
+                                <a href="payment.php" class="btn btn-success px-4 ms-2 rounded-4">
                                     Next<i class="fas fa-arrow-right ms-2"></i>
                                 </a>
                             </div>
