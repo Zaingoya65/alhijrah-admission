@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="password" class="form-control" id="cpassword" name="cpassword" minlength="8" required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                        <button type="submit" class="btn btn-primary w-100" disabled>Register</button>
                     </form>
 
                     <p class="text-center mt-3 small">

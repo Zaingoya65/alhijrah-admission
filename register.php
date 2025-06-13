@@ -179,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
 
                             <div class="col-12 mt-4">
-                                <button type="submit" class="btn btn-primary btn-lg w-100 py-3" id="submitBtn" disabled>
+                                <button type="submit" class="btn btn-primary btn-lg w-100 py-3" id="submitBtn">
                                     <span class="spinner-border spinner-border-sm me-2 d-none" id="spinner" role="status" aria-hidden="true"></span>
                                     Create Account
                                 </button>
