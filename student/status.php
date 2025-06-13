@@ -237,7 +237,7 @@ $application = $result->fetch_assoc();
     </div>
 </div>
 
-
+<?php include'../includes/stud_footer.php'; ?>
 <style>
 /* Timeline Styles */
 .timeline-steps {

@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
 });
 </script>
-
+<?php include'../includes/stud_footer.php'; ?>
 <style>
     .rounded-4 {
         border-radius: 1rem !important;

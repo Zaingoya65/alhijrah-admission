@@ -349,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
         </div>
     </div>
 </div>
-
+<?php include'../includes/stud_footer.php'; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Form validation

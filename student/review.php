@@ -643,7 +643,7 @@ include '../includes/stud_header.php';
         </div>
     </div>
 </div>
-
+<?php include'../includes/stud_footer.php'; ?>
 <style>
     /* Base Styles */
     dt {

@@ -279,7 +279,7 @@ include '../includes/stud_header.php';
         </div>
     </div>
 </div>
-
+<?php include'../includes/stud_footer.php'; ?>
 <style>
     :root {
         --primary-color: #2c3e50;

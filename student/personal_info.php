@@ -533,7 +533,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked && $application_ope
         </div>
     </div>
 </div>
-
+<?php include'../includes/stud_footer.php'; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // District data based on province selection

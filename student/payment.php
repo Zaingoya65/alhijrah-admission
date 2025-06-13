@@ -347,7 +347,7 @@ EOD;
         </div>
     </div>
 </div>
-
+<?php include'../includes/stud_footer.php'; ?>
 <style>
     .rounded-4 {
         border-radius: 1rem !important;
