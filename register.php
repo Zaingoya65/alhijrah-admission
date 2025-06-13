@@ -76,7 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 
                 // Send OTP email
               
-                if (send_otp_email($formData['email'], $otp)) {
+                if (send_otp_email($formData['email'], $otp, $verification_link)) {
+
                     $_SESSION['verify_user_id'] = $user_id;
                     header("Location: verify-account.php");
                     exit();
