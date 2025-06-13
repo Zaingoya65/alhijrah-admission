@@ -513,28 +513,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked && $application_ope
                         </div>
 
                         <!-- Form Actions -->
-                        <div class="d-flex justify-content-between mt-4">
-                            <div>
-                                <?php if ($profile_exists): ?>
-                                    <small class="text-muted">
-                                        Last updated: <?= date('M j, Y g:i A', strtotime($profile['last_updated'] ?? 'now')) ?>
-                                    </small>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <div>
-                                <?php if (!empty($success)): ?>
-                                    <a href="address.php" class="btn btn-success px-4">
-                                        <i class="fas fa-arrow-right me-2"></i> Continue to Contact Details
-                                    </a>
-                                <?php else: ?>
-                                    <button type="submit" class="btn btn-primary px-4" 
-                                            <?= ($editing_locked || !$application_open) ? 'disabled' : '' ?>>
-                                        <i class="fas fa-save me-2"></i> Save Information
-                                    </button>
-                                <?php endif; ?>
-                            </div>
-                        </div>
+                       <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 gap-3">
+    <div class="w-100 w-sm-auto order-1">
+        <?php if (!empty($success)): ?>
+            <a href="address.php" class="btn btn-success px-3 px-sm-4 rounded-4 w-100">
+                <i class="fas fa-arrow-right me-2"></i> Next
+            </a>
+        <?php else: ?>
+            <button type="submit" class="btn btn-primary px-3 px-sm-4 rounded-4 w-100" 
+                    <?= ($editing_locked || !$application_open) ? 'disabled' : '' ?>>
+                <i class="fas fa-save me-2"></i> Save Information
+            </button>
+        <?php endif; ?>
+    </div>
+</div>
                     </form>
                 </div>
             </div>
