@@ -290,83 +290,81 @@ include "../includes/stud_header.php";
                      <h5 class="py-2">Please seclect all Required documents then upload</h5> 
                     <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                        
-                       <div class="table-responsive">
-    <table class="table table-bordered table-hover align-middle">
-        <thead class="table-light">
-            <tr>
-                <th width="25%">Document</th>
-                <th width="15%">Status</th>
-                <th width="35%">Upload</th>
-                <th width="25%">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($documents as $field => $doc): ?>
-                <?php
-                    $filename = $doc_paths[$field . '_path'] ?? '';
-                    $file_exists = $filename && file_exists($upload_dir . $filename);
-                    $file_url = $file_exists ? ($upload_url . $filename) : '';
-                ?>
-                <tr>
-                    <td data-label="Document">
-                        <strong><?= htmlspecialchars($doc['label']) ?></strong>
-                        <?php if ($doc['required']): ?>
-                            <span class="text-danger">*</span>
-                        <?php endif; ?>
-                        <div class="text-muted small mt-1">
-                            <?= htmlspecialchars($doc['description']) ?>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="25%">Document</th>
+                                        <th width="15%">Status</th>
+                                        <th width="35%">Upload</th>
+                                        <th width="25%">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($documents as $field => $doc): ?>
+                                        <?php
+                                            $filename = $doc_paths[$field . '_path'] ?? '';
+                                            $file_exists = $filename && file_exists($upload_dir . $filename);
+                                            $file_url = $file_exists ? ($upload_url . $filename) : '';
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <strong><?= htmlspecialchars($doc['label']) ?></strong>
+                                                <?php if ($doc['required']): ?>
+                                                    <span class="text-danger">*</span>
+                                                <?php endif; ?>
+                                                <div class="text-muted small mt-1">
+                                                    <?= htmlspecialchars($doc['description']) ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <?php if ($file_exists): ?>
+                                                    <span class="badge bg-success">
+                                                        <i class="fas fa-check-circle me-1"></i> Uploaded
+                                                    </span>
+                                                    <div class="small text-muted mt-1">
+                                                        <?= round(filesize($upload_dir . $filename) / 1024) ?>KB
+                                                    </div>
+                                                <?php else: ?>
+                                                    <span class="badge bg-<?= $doc['required'] ? 'danger' : 'warning' ?>">
+                                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                                        <?= $doc['required'] ? 'Required' : 'Optional' ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <input type="file" 
+                                                           name="<?= htmlspecialchars($field) ?>" 
+                                                           class="form-control form-control-sm" 
+                                                           accept="application/pdf"
+                                                           <?= $editing_locked ? 'disabled' : '' ?>
+                                                           <?= $doc['required'] ? 'required' : '' ?>>
+                                                </div>
+                                                <div class="form-text small">PDF only, max 500KB</div>
+                                            </td>
+                                            <td>
+                                                <?php if ($file_exists): ?>
+                                                    <a href="<?= htmlspecialchars($file_url) ?>" 
+                                                       target="_blank" 
+                                                       class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-eye me-1"></i> View
+                                                    </a>
+                                                    <a href="?delete=<?= htmlspecialchars($field) ?>" 
+                                                       onclick="return confirm('Are you sure you want to delete this document?')" 
+                                                       class="btn btn-sm btn-outline-danger ms-2"
+                                                       <?= $editing_locked ? 'disabled' : '' ?>>
+                                                        <i class="fas fa-trash-alt me-1"></i> Delete
+                                                    </a>
+                                                <?php else: ?>
+                                                    <span class="text-muted small">No file uploaded</span>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
-                    </td>
-                    <td data-label="Status">
-                        <?php if ($file_exists): ?>
-                            <span class="badge bg-success">
-                                <i class="fas fa-check-circle me-1"></i> Uploaded
-                            </span>
-                            <div class="small text-muted mt-1">
-                                <?= round(filesize($upload_dir . $filename) / 1024) ?>KB
-                            </div>
-                        <?php else: ?>
-                            <span class="badge bg-<?= $doc['required'] ? 'danger' : 'warning' ?>">
-                                <i class="fas fa-exclamation-circle me-1"></i>
-                                <?= $doc['required'] ? 'Required' : 'Optional' ?>
-                            </span>
-                        <?php endif; ?>
-                    </td>
-                    <td data-label="Upload">
-                        <div class="input-group">
-                            <input type="file" 
-                                   name="<?= htmlspecialchars($field) ?>" 
-                                   class="form-control form-control-sm" 
-                                   accept="application/pdf"
-                                   <?= $editing_locked ? 'disabled' : '' ?>
-                                   <?= $doc['required'] ? 'required' : '' ?>>
-                        </div>
-                        <div class="form-text small">PDF only, max 500KB</div>
-                    </td>
-                    <td data-label="Actions">
-                        <?php if ($file_exists): ?>
-                            <div class="d-flex flex-wrap gap-2">
-                                <a href="<?= htmlspecialchars($file_url) ?>" 
-                                   target="_blank" 
-                                   class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-eye me-1"></i> View
-                                </a>
-                                <a href="?delete=<?= htmlspecialchars($field) ?>" 
-                                   onclick="return confirm('Are you sure you want to delete this document?')" 
-                                   class="btn btn-sm btn-outline-danger"
-                                   <?= $editing_locked ? 'disabled' : '' ?>>
-                                    <i class="fas fa-trash-alt me-1"></i> Delete
-                                </a>
-                            </div>
-                        <?php else: ?>
-                            <span class="text-muted small">No file uploaded</span>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
 
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-between mt-4">
@@ -460,45 +458,5 @@ document.addEventListener('DOMContentLoaded', function() {
     
     .input-group-text {
         font-size: 0.875rem;
-    }
-
-     @media (max-width: 768px) {
-        /* Stack table cells vertically */
-        .table-responsive table {
-            width: 100%;
-        }
-        .table-responsive thead {
-            display: none;
-        }
-        .table-responsive tr {
-            display: block;
-            margin-bottom: 1rem;
-            border: 1px solid #dee2e6;
-            border-radius: 0.25rem;
-        }
-        .table-responsive td {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem;
-            border-bottom: 1px solid #dee2e6;
-            width: 100% !important;
-        }
-        .table-responsive td:before {
-            content: attr(data-label);
-            font-weight: bold;
-            margin-right: 1rem;
-            flex: 0 0 120px;
-        }
-        .table-responsive td:last-child {
-            border-bottom: 0;
-        }
-        /* Adjust input/file controls */
-        .table-responsive .input-group {
-            flex-direction: column;
-        }
-        .table-responsive .form-control {
-            width: 100%;
-        }
     }
 </style>
