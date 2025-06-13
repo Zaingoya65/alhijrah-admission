@@ -32,8 +32,9 @@ function send_otp_email($email, $otp, $verification_link) {
 }
 
 
-function send_password_reset_email($email, $name, $token) {
-    $reset_link = "https://moccasin-tiger-993742.hostingersite.com/forgot-password.php?token=$token";
+function send_password_reset_email($email, $token) {
+   $reset_link = "https://moccasin-tiger-993742.hostingersite.com/reset-password.php?token=$token";
+
     $subject = "Password Reset Request";
     
     $message = "
@@ -42,9 +43,9 @@ function send_password_reset_email($email, $name, $token) {
         <title>Password Reset</title>
     </head>
     <body>
-        <h2>Hello $name,</h2>
+        <h2>Hello,</h2>
         <p>We received a request to reset your password.</p>
-        <p>Click here to reset: <a href='$reset_link'>$reset_link</a></p>
+        <p>Click here to reset to reset password: <a href='$reset_link'>$reset_link</a></p>
         <p>This link expires in 1 hour.</p>
     </body>
     </html>
