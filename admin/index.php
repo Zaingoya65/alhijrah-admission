@@ -7,6 +7,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Al-Hijrah Trust</title>
+    <link rel="icon" href="../../assets/images/trust-logo.png" type="image/png">
  </head>
  <body>
     <?php
