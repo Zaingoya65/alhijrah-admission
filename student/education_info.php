@@ -331,7 +331,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                         <!-- Form Navigation -->
                         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 gap-3">
     <a href="address.php" class="btn btn-outline-primary rounded-4 w-100 w-sm-auto order-1 order-sm-1">
-        <i class="fas fa-arrow-left me-2"></i>Previous
+        <i class="fas fa-arrow-left me-2"></i>Back
     </a>
     
     <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-sm-auto order-3 order-sm-2 mt-2 mt-sm-0">

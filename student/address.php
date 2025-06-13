@@ -411,7 +411,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 gap-3">
     <!-- Previous Button - Full width on mobile, auto on larger screens -->
     <a href="personal_info.php" class="btn btn-outline-primary rounded-4 w-100 w-sm-auto order-1 order-sm-1">
-        <i class="fas fa-arrow-left me-2"></i>Previous
+        <i class="fas fa-arrow-left me-2"></i>Back
     </a>
     
     <!-- Action Buttons - Stack vertically on mobile, horizontal on larger screens -->
