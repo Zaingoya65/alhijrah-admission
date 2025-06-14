@@ -176,6 +176,3 @@ while ($row = $recent_result->fetch_assoc()) $recent_applications[] = $row;
 </script>
 
 <?php include 'includes/admin_footer.php'; ?>
-</main>
-</body>
-</html>
