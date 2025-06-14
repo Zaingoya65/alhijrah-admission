@@ -162,6 +162,9 @@ while ($row = $recent_result->fetch_assoc()) $recent_applications[] = $row;
                         borderColor: ['#ffc107', '#28a745', '#dc3545'],
                         borderWidth: 1
                     }]
+                    console.log("Pending:", <?= json_encode($stats['pending'] ?? null) ?>);
+console.log("Approved:", <?= json_encode($stats['approved'] ?? null) ?>);
+console.log("Rejected:", <?= json_encode($stats['rejected'] ?? null) ?>);
                 },
                 options: {
                     responsive: true,
