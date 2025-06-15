@@ -157,6 +157,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
         $stmt->close();
     }
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($errors) && !$campus_deadline_passed && isset($success)) {
+    header("Location: address.php");
+    exit();
+}
 ?>
 
 <?php include '../includes/stud_header.php'; ?>
@@ -494,15 +499,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                         </div>
 
                         <!-- Form Actions -->
-                       <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 gap-3">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 gap-3">
     <div class="w-100 w-sm-auto order-1">
-        <?php if (!empty($success)): ?>
+        <?php if (!empty($success) && !$campus_deadline_passed): ?>
             <a href="address.php" class="btn btn-success px-3 px-sm-4 rounded-4 w-100">
                 <i class="fas fa-arrow-right me-2"></i> Next
             </a>
         <?php else: ?>
             <button type="submit" class="btn btn-primary px-3 px-sm-4 rounded-4 w-100" 
-                    <?= ($editing_locked || !$application_open) ? 'disabled' : '' ?>>
+                    <?= ($editing_locked || $campus_deadline_passed) ? 'disabled' : '' ?>>
                 <i class="fas fa-save me-2"></i> Save Information
             </button>
         <?php endif; ?>
