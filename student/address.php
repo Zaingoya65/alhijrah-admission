@@ -275,7 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                                 <label for="postal_code" class="form-label">Postal Code</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary bg-opacity-10 border-primary"><i class="fas fa-mail-bulk text-primary"></i></span>
-                                                    <input type="text" class="form-control rounded-4 <?= isset($errors['postal_code']) ? 'is-invalid' : '' ?>" 
+                                                    <input type="text" class="form-control  <?= isset($errors['postal_code']) ? 'is-invalid' : '' ?>" 
                                                            id="postal_code" name="postal_code" 
                                                            value="<?= htmlspecialchars($address['postal_code'] ?? '') ?>"
                                                            <?= $editing_locked ? 'readonly' : '' ?>>
@@ -306,7 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                                 <label for="phone_number" class="form-label">Mobile Number <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary bg-opacity-10 border-primary"><i class="fas fa-mobile-alt text-primary"></i></span>
-                                                    <input type="tel" class="form-control rounded-4 <?= isset($errors['phone_number']) ? 'is-invalid' : '' ?>" 
+                                                    <input type="tel" class="form-control <?= isset($errors['phone_number']) ? 'is-invalid' : '' ?>" 
                                                            id="phone_number" name="phone_number" 
                                                            value="<?= htmlspecialchars($address['phone_number'] ?? '') ?>" 
                                                            placeholder="03XXXXXXXXX" required
@@ -340,7 +340,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                                 <label for="emergency_contact" class="form-label">Full Name <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary bg-opacity-10 border-primary"><i class="fas fa-user text-primary"></i></span>
-                                                    <input type="text" class="form-control rounded-4 <?= isset($errors['emergency_contact']) ? 'is-invalid' : '' ?>" 
+                                                    <input type="text" class="form-control  <?= isset($errors['emergency_contact']) ? 'is-invalid' : '' ?>" 
                                                            id="emergency_contact" name="emergency_contact" 
                                                            value="<?= htmlspecialchars($address['emergency_contact'] ?? '') ?>" required
                                                            <?= $editing_locked ? 'readonly' : '' ?>>
@@ -378,7 +378,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                                 <label for="emergency_phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary bg-opacity-10 border-primary"><i class="fas fa-phone text-primary"></i></span>
-                                                    <input type="tel" class="form-control rounded-4 <?= isset($errors['emergency_phone']) ? 'is-invalid' : '' ?>" 
+                                                    <input type="tel" class="form-control <?= isset($errors['emergency_phone']) ? 'is-invalid' : '' ?>" 
                                                            id="emergency_phone" name="emergency_phone" 
                                                            value="<?= htmlspecialchars($address['emergency_phone'] ?? '') ?>" 
                                                            placeholder="03XXXXXXXXX" required

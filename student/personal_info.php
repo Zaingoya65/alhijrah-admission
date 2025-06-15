@@ -373,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($errors) && !$campus_deadline_
                                             <?php if (isset($errors['date_of_birth'])): ?>
                                                 <div class="invalid-feedback"><?= $errors['date_of_birth'] ?></div>
                                             <?php endif; ?>
-                                            <small class="text-muted">Student must be 12-14 years old</small>
+                                            <small class="text-muted">Student must be 11-13 years old</small>
                                         </div>
                                     </div>
                                 </div>
