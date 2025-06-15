@@ -320,17 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                                 <?php endif; ?>
                                                 <div class="form-text">Format: 03XXXXXXXXX (11 digits)</div>
                                             </div>
-                                            
-                                            <div class="col-md-6">
-                                                <div class="form-check form-switch mt-4 pt-2">
-                                                    <input class="form-check-input" type="checkbox" id="whatsapp_available" 
-                                                           name="whatsapp_available" <?= isset($address['whatsapp_available']) && $address['whatsapp_available'] ? 'checked' : '' ?>
-                                                           <?= $editing_locked ? 'disabled' : '' ?>>
-                                                    <label class="form-check-label" for="whatsapp_available">
-                                                        This number is available on WhatsApp
-                                                    </label>
-                                                </div>
-                                            </div>
+                                    
                                         </div>
                                     </div>
                                 </div>
