@@ -70,13 +70,17 @@ $documents = [
 
 $success = "";
 $errors = [];
+$doc_paths = [];
 
 // Fetch student's document records
 $stmt = $conn->prepare("SELECT * FROM documents WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
-$doc_paths = $result->num_rows > 0 ? $result->fetch_assoc() : [];
+
+if ($result->num_rows > 0) {
+    $doc_paths = $result->fetch_assoc();
+}
 $stmt->close();
 
 // Handle document deletion
@@ -88,13 +92,8 @@ if (isset($_GET["delete"]) && isset($documents[$_GET["delete"]])) {
     }
 
     $field = $_GET["delete"] . "_path";
-    $stmt = $conn->prepare("SELECT $field FROM documents WHERE user_id = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($row = $result->fetch_assoc()) {
-        $filename = $row[$field];
+    if (isset($doc_paths[$field])) {
+        $filename = $doc_paths[$field];
         $filepath = $upload_dir . $filename;
 
         if ($filename && file_exists($filepath)) {
@@ -122,12 +121,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$editing_locked) {
         }
 
         $file = $_FILES[$field];
-        $file_info = finfo_open(FILEINFO_MIME_TYPE);
-        $mime = finfo_file($file_info, $file["tmp_name"]);
-        finfo_close($file_info);
+        
+        // Validate file type
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $file["tmp_name"]);
+        finfo_close($finfo);
+        
+        // Validate file size
         $size = $file["size"];
 
-        // Validate file
         if (!in_array($mime, $allowed_types)) {
             $errors[$field] = "{$doc['label']} must be in PDF format";
             continue;
@@ -158,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$editing_locked) {
     }
 
     // Update database only if we have successful uploads
-    if (!empty($uploaded_docs) {
+    if (!empty($uploaded_docs)) {
         // Check if document record exists
         $check = $conn->prepare("SELECT id FROM documents WHERE user_id = ?");
         $check->bind_param("i", $user_id);
@@ -167,25 +169,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$editing_locked) {
         $check->close();
 
         if ($exists) {
-            // Build update query for only the fields that were uploaded
-            $update_fields = [];
-            $update_values = [];
+            // Build update query
+            $setParts = [];
+            $params = [];
             $types = "";
             
             foreach ($uploaded_docs as $field => $filename) {
-                $update_fields[] = "{$field}_path = ?";
-                $update_values[] = $filename;
+                $setParts[] = "{$field}_path = ?";
+                $params[] = $filename;
                 $types .= "s";
             }
             
-            $update_values[] = $user_id;
+            $params[] = $user_id;
             $types .= "i";
             
-            $sql = "UPDATE documents SET " . implode(", ", $update_fields) . " WHERE user_id = ?";
+            $sql = "UPDATE documents SET " . implode(", ", $setParts) . " WHERE user_id = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param($types, ...$update_values);
+            $stmt->bind_param($types, ...$params);
         } else {
-            // Create new record with only the uploaded fields
+            // Create new record
             $fields = ["user_id"];
             $values = [$user_id];
             $placeholders = ["?"];
@@ -327,15 +329,13 @@ include "../includes/stud_header.php";
                                     <li>Ensure documents are <strong>clear and readable</strong></li>
                                     <li>Files should not be password protected</li>
                                 </ul>
-                               
                             </div>
                         </div>
                     </div>
 
                     <!-- Document Upload Form -->
-                     <h5 class="py-2">Please seclect all Required documents then upload</h5> 
+                    <h5 class="py-2">Please select documents to upload</h5>
                     <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
-                       
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover align-middle">
                                 <thead class="table-light">
@@ -385,7 +385,7 @@ include "../includes/stud_header.php";
                                                            class="form-control form-control-sm" 
                                                            accept="application/pdf"
                                                            <?= $editing_locked ? 'disabled' : '' ?>
-                                                           <?= $doc['required'] ? 'required' : '' ?>>
+                                                           <?= $doc['required'] && !$file_exists ? 'required' : '' ?>>
                                                 </div>
                                                 <div class="form-text small">PDF only, max 500KB</div>
                                             </td>
@@ -413,20 +413,23 @@ include "../includes/stud_header.php";
                         </div>
 
                         <!-- Form Actions -->
-                        <div class="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto order-2">
-        <!-- Upload Button -->
-        <button type="submit" 
-                class="btn btn-primary px-3 px-md-4 rounded-4 flex-grow-1"
-                <?= $editing_locked ? 'disabled' : '' ?>>
-            <i class="fas fa-upload me-2"></i> Upload Selected Documents
-        </button>
-        
-        <!-- Review Button -->
-        <a href="review.php" class="btn btn-success px-3 px-md-4 rounded-4 flex-grow-1 mt-2 mt-md-0 ms-md-2">
-            <i class="fas fa-check-circle me-2"></i> Review Application
-        </a>
-    </div>
-</div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-4">
+                            <a href="education_info.php" class="btn btn-outline-secondary px-3 px-md-4 rounded-4 w-100 w-md-auto order-1">
+                                <i class="fas fa-arrow-left me-2"></i> Back
+                            </a>
+                            
+                            <div class="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto order-2">
+                                <button type="submit" 
+                                        class="btn btn-primary px-3 px-md-4 rounded-4 flex-grow-1"
+                                        <?= $editing_locked ? 'disabled' : '' ?>>
+                                    <i class="fas fa-upload me-2"></i> Upload Selected Documents
+                                </button>
+                                
+                                <a href="review.php" class="btn btn-success px-3 px-md-4 rounded-4 flex-grow-1 mt-2 mt-md-0 ms-md-2">
+                                    <i class="fas fa-check-circle me-2"></i> Review Application
+                                </a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -476,7 +479,9 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
 });
 </script>
-<?php include'../includes/stud_footer.php'; ?>
+
+<?php include '../includes/stud_footer.php'; ?>
+
 <style>
     .rounded-4 {
         border-radius: 1rem !important;
