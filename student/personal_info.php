@@ -50,7 +50,7 @@ if ($result->num_rows > 0) {
 $stmt->close();
 
 // Process form submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked && $application_open) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
     // Validate and sanitize inputs
     $full_name = trim($conn->real_escape_string($_POST['full_name'] ?? ''));
     $date_of_birth = $conn->real_escape_string($_POST['date_of_birth'] ?? '');
@@ -71,17 +71,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked && $application_ope
     if (empty($guardian_occupation)) $errors['guardian_occupation'] = "Guardian occupation is required";
     if (empty($applied_campus)) $errors['applied_campus'] = "Campus selection is required";
 
-    // Validate campus-specific deadline
-    if ($applied_campus == 'Ziarat' && ($current_date < $deadlines['ziarat_start'] || $current_date > $deadlines['ziarat_end'])) {
-        $errors['campus_period'] = "Application closed for Ziarat Campus";
-    } elseif ($applied_campus == 'Dera Ghazi Khan' && ($current_date < $deadlines['dgkhan_start'] || $current_date > $deadlines['dgkhan_end'])) {
-        $errors['campus_period'] = "Application closed for Dera Ghazi Khan Campus";
+    // Check campus deadline
+    if ($applied_campus == 'Ziarat') {
+        if ($current_date < $deadlines['ziarat_start'] || $current_date > $deadlines['ziarat_end']) {
+            $errors['campus_period'] = "Application period for Ziarat Campus has ended. You cannot apply now.";
+        }
+    } elseif ($applied_campus == 'Dera Ghazi Khan') {
+        if ($current_date < $deadlines['dgkhan_start'] || $current_date > $deadlines['dgkhan_end']) {
+            $errors['campus_period'] = "Application period for Dera Ghazi Khan Campus has ended. You cannot apply now.";
+        }
     }
 
     // Handle file upload
     $upload_dir = "../uploads/$id/";
     $profile_image = $profile['profile_image'] ?? null;
-    $remove_image = isset($_POST['remove_image']);
 
     if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
         $allowed_types = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
@@ -116,16 +119,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked && $application_ope
                 $profile_image = $profile['profile_image'] ?? null;
             }
         }
-    } elseif ($remove_image && $profile_exists && !empty($profile['profile_image'])) {
-        $old_image_path = $upload_dir . $profile['profile_image'];
-        if (file_exists($old_image_path)) {
-            unlink($old_image_path);
-        }
-        $profile_image = null;
     }
 
     // Save to database if no errors
-    if (empty($errors)) {
+    if (empty($errors) && $application_open) {
         if ($profile_exists) {
             $stmt = $conn->prepare("UPDATE student_profiles SET 
                 full_name = ?, date_of_birth = ?, domicile_province = ?, domicile_district = ?, 
@@ -275,83 +272,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked && $application_ope
                             <div class="col-lg-6">
                                 <!-- Profile Photo Section -->
                                 <div class="card border-0 shadow-sm rounded-4 mb-4">
-                                    <div class="card-header bg-white border-bottom">
-                                        <h6 class="mb-0">Profile Photo</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="position-relative me-4">
-                                                <!-- Profile Image Container -->
-                                                <div class="profile-image-container rounded-circle border shadow-sm cursor-pointer"
-                                                     style="width: 120px; height: 120px; overflow: hidden;"
-                                                     onclick="document.getElementById('profile_image').click()">
-                                                    <?php if ($profile_exists && !empty($profile['profile_image']) && file_exists($upload_dir . $profile['profile_image'])): ?>
-                                                        <img src="<?= $upload_dir . $profile['profile_image'] ?>" 
-                                                             class="img-fluid h-100 w-100" 
-                                                             style="object-fit: cover;"
-                                                             alt="Profile Image"
-                                                             id="currentProfileImage">
-                                                    <?php else: ?>
-                                                        <div class="h-100 w-100 bg-light d-flex flex-column align-items-center justify-content-center">
-                                                            <i class="fas fa-user text-muted mb-2 fs-4"></i>
-                                                            <small class="text-muted">No photo</small>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                    
-                                                    <!-- Upload Indicator -->
-                                                    <div class="upload-indicator position-absolute top-0 start-0 w-100 h-100 d-none" 
-                                                         style="background: rgba(0,0,0,0.5);">
-                                                        <div class="h-100 d-flex align-items-center justify-content-center">
-                                                            <div class="spinner-border text-light" role="status">
-                                                                <span class="visually-hidden">Uploading...</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!-- Remove Image Button -->
-                                                <?php if ($profile_exists && !empty($profile['profile_image']) && !$editing_locked): ?>
-                                                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 rounded-circle shadow-sm"
-                                                            style="width: 28px; height: 28px; transform: translate(30%, -30%);"
-                                                            onclick="event.stopPropagation(); document.getElementById('remove_image').click()">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                <?php endif; ?>
-                                            </div>
-                                            
-                                            <div class="flex-grow-1">
-                                                <div class="alert alert-info border-0 rounded-3 py-2 mb-3">
-                                                    <small>
-                                                        <i class="fas fa-info-circle me-1"></i>
-                                                        <strong>Photo Requirements:</strong> JPG/PNG/WEBP, max 500KB, plain background
-                                                    </small>
-                                                </div>
-                                                
-                                                <?php if (!$editing_locked): ?>
-                                                    <div class="d-flex">
-                                                        <button type="button" class="btn btn-sm btn-outline-primary me-2"
-                                                                onclick="document.getElementById('profile_image').click()">
-                                                            <i class="fas fa-upload me-1"></i> Upload
-                                                        </button>
-                                                        <input type="file" class="d-none" id="profile_image" name="profile_image" accept="image/*">
-                                                        <input type="checkbox" class="d-none" id="remove_image" name="remove_image" value="1">
-                                                        
-                                                        <?php if ($profile_exists && !empty($profile['profile_image'])): ?>
-                                                            <button type="button" class="btn btn-sm btn-outline-danger"
-                                                                    onclick="document.getElementById('remove_image').click()">
-                                                                <i class="fas fa-trash-alt me-1"></i> Remove
-                                                            </button>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                                
-                                                <?php if (isset($errors['profile_image'])): ?>
-                                                    <div class="text-danger small mt-2"><?= $errors['profile_image'] ?></div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+    <div class="card-header bg-white border-bottom">
+        <h6 class="mb-0">Profile Photo</h6>
+    </div>
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div class="position-relative me-4">
+                <!-- Profile Image Container -->
+                <div class="profile-image-container rounded-circle border shadow-sm cursor-pointer"
+                     style="width: 120px; height: 120px; overflow: hidden;"
+                     onclick="document.getElementById('profile_image').click()">
+                    <?php if ($profile_exists && !empty($profile['profile_image']) && file_exists($upload_dir . $profile['profile_image'])): ?>
+                        <img src="<?= $upload_dir . $profile['profile_image'] ?>" 
+                             class="img-fluid h-100 w-100" 
+                             style="object-fit: cover;"
+                             alt="Profile Image"
+                             id="currentProfileImage">
+                    <?php else: ?>
+                        <div class="h-100 w-100 bg-light d-flex flex-column align-items-center justify-content-center">
+                            <i class="fas fa-user text-muted mb-2 fs-4"></i>
+                            <small class="text-muted">No photo</small>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <!-- Upload Indicator -->
+                    <div class="upload-indicator position-absolute top-0 start-0 w-100 h-100 d-none" 
+                         style="background: rgba(0,0,0,0.5);">
+                        <div class="h-100 d-flex align-items-center justify-content-center">
+                            <div class="spinner-border text-light" role="status">
+                                <span class="visually-hidden">Uploading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex-grow-1">
+                <div class="alert alert-info border-0 rounded-3 py-2 mb-3">
+                    <small>
+                        <i class="fas fa-info-circle me-1"></i>
+                        <strong>Photo Requirements:</strong> JPG/PNG/WEBP, max 500KB, plain background
+                    </small>
+                </div>
+                
+                <?php if (!$editing_locked): ?>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-sm btn-outline-primary me-2"
+                                onclick="document.getElementById('profile_image').click()">
+                            <i class="fas fa-upload me-1"></i> Upload
+                        </button>
+                        <input type="file" class="d-none" id="profile_image" name="profile_image" accept="image/*">
+                    </div>
+                <?php endif; ?>
+                
+                <?php if (isset($errors['profile_image'])): ?>
+                    <div class="text-danger small mt-2"><?= $errors['profile_image'] ?></div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
 
                                 <!-- Personal Information Section -->
                                 <div class="card border-0 shadow-sm rounded-4">
