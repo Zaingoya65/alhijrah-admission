@@ -275,7 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$editing_locked) {
                                                 <label for="last_school_result" class="form-label">Result (%) <span class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <input type="number" step="0.01" min="0" max="100" 
-                                                           class="form-control rounded-4 <?= isset($errors['last_school_result']) ? 'is-invalid' : '' ?>" 
+                                                           class="form-control <?= isset($errors['last_school_result']) ? 'is-invalid' : '' ?>" 
                                                            id="last_school_result" name="last_school_result" 
                                                            value="<?= htmlspecialchars($education['last_school_result'] ?? '') ?>" 
                                                            <?= $editing_locked ? 'readonly' : '' ?> required>
