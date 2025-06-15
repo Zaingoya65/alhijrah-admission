@@ -199,9 +199,7 @@ WHERE sp.user_id = ?");
                                     <?php endif; ?>
                                 </div>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user-circle me-2"></i>My Profile</a></li>
-                            <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog me-2"></i>Settings</a></li>
+            
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item text-danger" href="../logout.php" onclick="return confirm('Are you sure you want to logout?');">
