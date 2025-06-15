@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card-body p-4 p-md-5">
                     <!-- Branding Section -->
                     <div class="text-center mb-4">
-                        <img src="assets/images/trust-logo.png" alt="Al-Hijrah Trust Logo" class="mb-3" style="height: 80px;">
+                        <img src="/assets/images/trust-logo.png" alt="Al-Hijrah Trust Logo" class="mb-3" style="height: 80px;">
                         <h2 class="trust-name text-primary">Al-Hijrah Trust</h2>
                         <p class="text-muted">Create your account to get started</p>
                     </div>

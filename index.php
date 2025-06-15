@@ -8,7 +8,7 @@
                 <h1 class="display-4 fw-bold mb-4">100% Free Quality Education for 2025-26</h1>
                 <p class="lead mb-4">Al-Hijrah Residential School and College offers fully-funded scholarships covering education, lodging, meals, uniforms, books and all expenses for deserving students from Balochistan, Sindh, and South Punjab.</p>
                 <div class="d-flex gap-3">
-                    <a href="https://admissions.alhijrah.pk" class="btn btn-primary btn-lg px-4">Apply Online</a>
+                    <a href="https://moccasin-tiger-993742.hostingersite.com/login.php" class="btn btn-primary btn-lg px-4">Apply Online</a>
                     <a href="#admission" class="btn btn-outline-primary btn-lg px-4">Eligibility Criteria</a>
                 </div>
             </div>

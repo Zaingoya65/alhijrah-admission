@@ -12,6 +12,7 @@ if (isset($_SESSION['id'])) {
     exit();
 }
 
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Sanitize and validate input
     $b_form = trim($conn->real_escape_string($_POST['b_form'] ?? ''));
