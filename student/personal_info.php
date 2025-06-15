@@ -658,25 +658,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Age validation
-    const dobInput = document.getElementById('date_of_birth');
-    if (dobInput) {
-        dobInput.addEventListener('change', function() {
-            const dob = new Date(this.value);
-            const today = new Date();
-            let age = today.getFullYear() - dob.getFullYear();
-            const monthDiff = today.getMonth() - dob.getMonth();
-            
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-                age--;
-            }
-            
-            if (age < 12 || age > 14) {
-                alert('Student age must be between 12 to 14 years to be eligible for admission.');
-                this.value = '';
-            }
-        });
-    }
+  
     
     // CNIC format validation
     const cnicInput = document.getElementById('guardian_cnic');
