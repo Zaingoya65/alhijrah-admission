@@ -113,7 +113,10 @@ if (isset($_GET["delete"]) && isset($documents[$_GET["delete"]])) {
 
 // Handle file uploads
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !$editing_locked) {
+    $uploaded_docs = [];
+    
     foreach ($documents as $field => $doc) {
+        // Skip if no file was uploaded for this field
         if (!isset($_FILES[$field]) || $_FILES[$field]["error"] !== UPLOAD_ERR_OK) {
             continue;
         }
@@ -148,32 +151,77 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$editing_locked) {
                 }
             }
 
-            // Update database
-            $check = $conn->prepare("SELECT id FROM documents WHERE user_id = ?");
-            $check->bind_param("i", $user_id);
-            $check->execute();
-            $exists = $check->get_result()->num_rows > 0;
-            $check->close();
-
-            if ($exists) {
-                $stmt = $conn->prepare("UPDATE documents SET {$field}_path = ? WHERE user_id = ?");
-            } else {
-                $stmt = $conn->prepare("INSERT INTO documents (user_id, {$field}_path) VALUES (?, ?)");
-            }
-            
-            $stmt->bind_param("si", $safe_filename, $user_id);
-            
-            if ($stmt->execute()) {
-                $success = "{$doc['label']} uploaded successfully";
-                $doc_paths[$field . '_path'] = $safe_filename; // Update local paths
-            } else {
-                $errors[$field] = "Database error: " . $conn->error;
-                unlink($destination); // Clean up failed upload
-            }
-            $stmt->close();
+            $uploaded_docs[$field] = $safe_filename;
         } else {
             $errors[$field] = "Failed to upload {$doc['label']}";
         }
+    }
+
+    // Update database only if we have successful uploads
+    if (!empty($uploaded_docs) {
+        // Check if document record exists
+        $check = $conn->prepare("SELECT id FROM documents WHERE user_id = ?");
+        $check->bind_param("i", $user_id);
+        $check->execute();
+        $exists = $check->get_result()->num_rows > 0;
+        $check->close();
+
+        if ($exists) {
+            // Build update query for only the fields that were uploaded
+            $update_fields = [];
+            $update_values = [];
+            $types = "";
+            
+            foreach ($uploaded_docs as $field => $filename) {
+                $update_fields[] = "{$field}_path = ?";
+                $update_values[] = $filename;
+                $types .= "s";
+            }
+            
+            $update_values[] = $user_id;
+            $types .= "i";
+            
+            $sql = "UPDATE documents SET " . implode(", ", $update_fields) . " WHERE user_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param($types, ...$update_values);
+        } else {
+            // Create new record with only the uploaded fields
+            $fields = ["user_id"];
+            $values = [$user_id];
+            $placeholders = ["?"];
+            $types = "i";
+            
+            foreach ($uploaded_docs as $field => $filename) {
+                $fields[] = "{$field}_path";
+                $values[] = $filename;
+                $placeholders[] = "?";
+                $types .= "s";
+            }
+            
+            $sql = "INSERT INTO documents (" . implode(", ", $fields) . ") VALUES (" . implode(", ", $placeholders) . ")";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param($types, ...$values);
+        }
+        
+        if ($stmt->execute()) {
+            $success = count($uploaded_docs) > 1 ? "Documents uploaded successfully" : "Document uploaded successfully";
+            
+            // Update local paths
+            foreach ($uploaded_docs as $field => $filename) {
+                $doc_paths[$field . '_path'] = $filename;
+            }
+        } else {
+            $errors['database'] = "Database error: " . $conn->error;
+            
+            // Clean up any files that were uploaded but not saved to DB
+            foreach ($uploaded_docs as $filename) {
+                $filepath = $upload_dir . $filename;
+                if (file_exists($filepath)) {
+                    unlink($filepath);
+                }
+            }
+        }
+        $stmt->close();
     }
 }
 
@@ -365,19 +413,12 @@ include "../includes/stud_header.php";
                         </div>
 
                         <!-- Form Actions -->
-                       <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-4">
-    <!-- Back Button - Full width on mobile, auto on desktop -->
-    <a href="education_info.php" class="btn btn-outline-secondary px-3 px-md-4 rounded-4 w-100 w-md-auto order-1">
-        <i class="fas fa-arrow-left me-2"></i> Back
-    </a>
-    
-    <!-- Action Buttons - Stack on mobile, horizontal on desktop -->
-    <div class="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto order-2">
+                        <div class="d-flex flex-column flex-md-row gap-2 w-100 w-md-auto order-2">
         <!-- Upload Button -->
         <button type="submit" 
                 class="btn btn-primary px-3 px-md-4 rounded-4 flex-grow-1"
                 <?= $editing_locked ? 'disabled' : '' ?>>
-            <i class="fas fa-upload me-2"></i> Upload Documents
+            <i class="fas fa-upload me-2"></i> Upload Selected Documents
         </button>
         
         <!-- Review Button -->
