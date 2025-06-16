@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Al-Hijrah Trust | Admission System</title>
-     <link rel="icon" href="../assets/images/trust-logo.png" type="image/png" sizes="32x32">
+     <link rel="apple-touch-icon" href="../assets/images/trust-logo.png" type="image/png" sizes="32x32">
      <link rel="stylesheet" href="../assets/css/style.css">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
