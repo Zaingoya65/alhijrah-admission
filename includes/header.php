@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Manage Al-Hijrah Trust’s online admissions. Al-Hijrah Online Admission Portal ">
+<meta name="keywords" content="Al-Hijrah, Al-Hijrah Trust, Al-Hijrah Online App, Islamic Charity, Admission System, Al-Hijrah Online Admission Portal">
+<meta name="author" content="Al-Hijrah Trust">
+
+
+    
+    
+    
     <title>Al-Hijrah Trust | Admission System</title>
  <link rel="icon"  href="../assets/images/trust-logo.jpg" type="image/x-icon">
 
