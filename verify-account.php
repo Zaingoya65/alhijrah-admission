@@ -11,6 +11,8 @@ if (isset($_SESSION['id']) && !isset($_SESSION['verify_user_id'])) {
     exit();
 }
 
+
+
 $error = '';
 $success = '';
 $email = '';
@@ -39,11 +41,11 @@ if (isset($_GET['token'])) {
             $update_stmt->execute();
             
             // Set session and redirect with success message
-            $_SESSION['id'] = $user['id'];
-            unset($_SESSION['verify_user_id']);
-            $_SESSION['verification_success'] = "Your account has been successfully verified!";
+            unset($_SESSION['verify_user_id']); // keep this
+            $_SESSION['verification_success'] = "Your account has been verified successfully. Please log in.";
             header("Location: login.php");
             exit();
+        
         } else {
             $error = "Verification link has expired. Please request a new one.";
         }
