@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Al-Hijrah Trust | Admission System</title>
-<link rel="icon" type="image/png" sizes="180x180" href="../assets/images/trust-logo.png">
-
+ <link rel="icon"  href="../assets/images/trust-logo.jpg" type="image/x-icon">
 
 
 

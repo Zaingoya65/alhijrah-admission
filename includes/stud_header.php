@@ -74,8 +74,7 @@ WHERE sp.user_id = ?");
     <link rel="stylesheet" href="../assets/css/style.css">
     
     <!-- Favicon -->
-    <link rel="icon" href="../assets/images/trust-logo.png" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/trust-logo.png">
+     <link rel="icon"  href="../assets/images/trust-logo.jpg" type="image/x-icon">
     
     <style>
         :root {
