@@ -92,7 +92,7 @@ if (isset($_GET['resend'])) {
         $email_result = $email_stmt->get_result();
         $user = $email_result->fetch_assoc();
         
-        if (send_otp_email($user['email'], $new_otp)) {
+        if (send_otp_email($user['email'], $new_otp, $verification_link)) {
             $success = "A new verification code has been sent to your email address.";
         } else {
             $error = "Failed to send verification email. Please try again.";
@@ -120,8 +120,8 @@ include 'includes/header.php';
                             <h5><i class="fas fa-info-circle me-2"></i>Verification Instructions</h5>
                             <ol class="mb-0">
                                 <li>Check your email <strong><?= htmlspecialchars($masked_email ?? '') ?></strong> for the 6-digit verification code</li>
-                                <li>Enter the code below to verify your account</li>
-                                <li>The code expires in 15 minutes</li>
+                                <li>Enter the code below to verify your account or click on the link</li>
+                                <li>The code expires in 15 minutes but the link expires in 1 hour</li>
                                 <li>Can't find the email? Check your spam folder</li>
                             </ol>
                         </div>
