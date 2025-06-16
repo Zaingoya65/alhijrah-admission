@@ -6,19 +6,62 @@ include 'includes/config.php';
 include 'includes/email_functions.php';
 
 // Redirect if already verified or not logged in
-if (!isset($_SESSION['verify_user_id']) || isset($_SESSION['id'])) {
-    header("Location: login.php");
-    exit();
+if (!isset($_SESSION['verify_user_id']) {
+    if (isset($_SESSION['id'])) {
+        header("Location: login.php");
+        exit();
+    } else {
+        header("Location: register.php");
+        exit();
+    }
 }
 
 $error = '';
 $success = '';
-$email = ''; // Initialize email variable
+$email = '';
 
-// Get user email for display
+// Check if we need to automatically resend OTP (new visit by unverified user)
+$should_resend = !isset($_GET['resend']) && !isset($_POST['otp']) && !isset($_GET['token']);
+
+// Check for token verification
+if (isset($_GET['token'])) {
+    $token = trim($conn->real_escape_string($_GET['token']));
+    
+    $sql = "SELECT id, verification_token_expiry FROM registered_users WHERE verification_token = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s', $token);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        
+        if (strtotime($user['verification_token_expiry']) > time()) {
+            // Token is valid - verify account
+            $update_sql = "UPDATE registered_users SET is_verified = TRUE, verification_token = NULL, verification_token_expiry = NULL, otp = NULL, otp_expiry = NULL WHERE id = ?";
+            $update_stmt = $conn->prepare($update_sql);
+            $update_stmt->bind_param('i', $user['id']);
+            $update_stmt->execute();
+            
+            $_SESSION['id'] = $user['id'];
+            unset($_SESSION['verify_user_id']);
+            
+            $_SESSION['verification_success'] = "Your account has been successfully verified!";
+            header("Location: login.php");
+            exit();
+        } else {
+            $error = "Verification link has expired. Please request a new one.";
+        }
+    } else {
+        $error = "Invalid verification link.";
+    }
+    $stmt->close();
+}
+
+// Get user email and verification status
 if (isset($_SESSION['verify_user_id'])) {
     $user_id = $_SESSION['verify_user_id'];
-    $sql = "SELECT email FROM registered_users WHERE id = ?";
+    $sql = "SELECT email, is_verified, otp_expiry FROM registered_users WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -27,12 +70,41 @@ if (isset($_SESSION['verify_user_id'])) {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
         $email = $user['email'];
-        // Mask email for display (e.g., te**@example.com)
         $masked_email = substr($user['email'], 0, 2) . str_repeat('*', strpos($user['email'], '@') - 2) . substr($user['email'], strpos($user['email'], '@'));
+        
+        // Automatically resend OTP if needed
+        if ($should_resend && !$user['is_verified']) {
+            // Check if existing OTP is expired
+            $otp_expired = !$user['otp_expiry'] || strtotime($user['otp_expiry']) < time();
+            
+            if ($otp_expired) {
+                $new_otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+                $otp_expiry = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+                $verification_token = bin2hex(random_bytes(16));
+                $verification_token_expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
+                
+                $update_sql = "UPDATE registered_users SET otp = ?, otp_expiry = ?, verification_token = ?, verification_token_expiry = ? WHERE id = ?";
+                $update_stmt = $conn->prepare($update_sql);
+                $update_stmt->bind_param('ssssi', $new_otp, $otp_expiry, $verification_token, $verification_token_expiry, $user_id);
+                
+                if ($update_stmt->execute()) {
+                    $verification_link = "https://moccasin-tiger-993742.hostingersite.com/verify-account.php?token=$verification_token";
+                    if (send_otp_email($user['email'], $new_otp, $verification_link)) {
+                        $success = "A new verification code has been automatically sent to your email address.";
+                    } else {
+                        $error = "Failed to send verification email. Please try again.";
+                    }
+                } else {
+                    $error = "Failed to generate new OTP. Please try again.";
+                }
+                $update_stmt->close();
+            }
+        }
     }
     $stmt->close();
 }
 
+// OTP Form Submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $otp = trim($conn->real_escape_string($_POST['otp'] ?? ''));
     
@@ -51,16 +123,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user = $result->fetch_assoc();
             
             if ($user['otp'] === $otp && strtotime($user['otp_expiry']) > time()) {
-                // OTP is valid
-                $update_sql = "UPDATE registered_users SET is_verified = TRUE, otp = NULL, otp_expiry = NULL WHERE id = ?";
+                // OTP is valid - verify account
+                $update_sql = "UPDATE registered_users SET is_verified = TRUE, otp = NULL, otp_expiry = NULL, verification_token = NULL, verification_token_expiry = NULL WHERE id = ?";
                 $update_stmt = $conn->prepare($update_sql);
                 $update_stmt->bind_param('i', $user_id);
                 $update_stmt->execute();
                 
-                // Set session and redirect
                 $_SESSION['id'] = $user_id;
                 unset($_SESSION['verify_user_id']);
                 
+                $_SESSION['verification_success'] = "Your account has been successfully verified!";
                 header("Location: login.php");
                 exit();
             } else {
@@ -73,20 +145,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Resend OTP functionality
+// Manual Resend OTP
 if (isset($_GET['resend'])) {
     $user_id = $_SESSION['verify_user_id'];
     $new_otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
     $otp_expiry = date('Y-m-d H:i:s', strtotime('+15 minutes'));
-    $verification_token = bin2hex(random_bytes(16)); // 32-character token
+    $verification_token = bin2hex(random_bytes(16));
     $verification_token_expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
     
-    $sql = "UPDATE registered_users SET otp = ?, otp_expiry = ? WHERE id = ?";
+    $sql = "UPDATE registered_users SET otp = ?, otp_expiry = ?, verification_token = ?, verification_token_expiry = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ssi', $new_otp, $otp_expiry, $user_id);
+    $stmt->bind_param('ssssi', $new_otp, $otp_expiry, $verification_token, $verification_token_expiry, $user_id);
     
     if ($stmt->execute()) {
-        // Get user email to resend OTP
         $email_sql = "SELECT email FROM registered_users WHERE id = ?";
         $email_stmt = $conn->prepare($email_sql);
         $email_stmt->bind_param('i', $user_id);
@@ -111,6 +182,7 @@ if (isset($_GET['resend'])) {
 
 include 'includes/header.php';
 ?>
+
 
 <div class="container my-5">
     <div class="row justify-content-center">
