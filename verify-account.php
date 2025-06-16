@@ -91,7 +91,8 @@ if (isset($_GET['resend'])) {
         $email_stmt->execute();
         $email_result = $email_stmt->get_result();
         $user = $email_result->fetch_assoc();
-        
+        $verification_link = "https://moccasin-tiger-993742.hostingersite.com/verify-account.php?token=$verification_token";
+            
         if (send_otp_email($user['email'], $new_otp, $verification_link)) {
             $success = "A new verification code has been sent to your email address.";
         } else {
