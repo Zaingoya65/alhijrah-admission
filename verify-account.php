@@ -18,7 +18,7 @@ $email = ''; // Initialize email variable
 // Get user email for display
 if (isset($_SESSION['verify_user_id'])) {
     $user_id = $_SESSION['verify_user_id'];
-    $sql = "SELECT email, name FROM registered_users WHERE id = ?";
+    $sql = "SELECT email FROM registered_users WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -85,14 +85,14 @@ if (isset($_GET['resend'])) {
     
     if ($stmt->execute()) {
         // Get user email to resend OTP
-        $email_sql = "SELECT email, name FROM registered_users WHERE id = ?";
+        $email_sql = "SELECT email FROM registered_users WHERE id = ?";
         $email_stmt = $conn->prepare($email_sql);
         $email_stmt->bind_param('i', $user_id);
         $email_stmt->execute();
         $email_result = $email_stmt->get_result();
         $user = $email_result->fetch_assoc();
         
-        if (send_otp_email($user['email'], $user['name'], $new_otp)) {
+        if (send_otp_email($user['email'], $new_otp)) {
             $success = "A new verification code has been sent to your email address.";
         } else {
             $error = "Failed to send verification email. Please try again.";
