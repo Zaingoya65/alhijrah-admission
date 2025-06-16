@@ -208,12 +208,7 @@ include '../includes/stud_header.php';
                                                     <small>Check Status</small>
                                                 </a>
                                             </div>
-                                            <div class="col-6">
-                                                <a href="../support.php" class="btn btn-outline-primary w-100 h-100 d-flex flex-column align-items-center justify-content-center p-3 rounded-3">
-                                                    <i class="fas fa-question mb-2"></i>
-                                                    <small>Get Help</small>
-                                                </a>
-                                            </div>
+                                           
                                         </div>
                                     </div>
                                 </div>
@@ -262,8 +257,8 @@ include '../includes/stud_header.php';
                                             <p class="mb-0 text-muted">Our support team is ready to help you with any questions.</p>
                                         </div>
                                         <div class="ms-md-auto">
-                                            <a href="../support.php" class="btn btn-primary me-2">
-                                                <i class="fas fa-envelope me-1"></i> Contact Support
+                                            <a href="mailto: technicalteam@alhijrah.com.pk" class="btn btn-primary me-2">
+                                                <i class="fas fa-envelope me-1"></i> Contact Support: technicalteam@alhijrah.com.pk
                                             </a>
                                             <a href="../faq.php" class="btn btn-outline-primary">
                                                 <i class="fas fa-question-circle me-1"></i> View FAQs
@@ -279,6 +274,8 @@ include '../includes/stud_header.php';
         </div>
     </div>
 </div>
+
+
 <?php include'../includes/stud_footer.php'; ?>
 <style>
     :root {
