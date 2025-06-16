@@ -6,7 +6,7 @@ include 'includes/config.php';
 include 'includes/email_functions.php';
 
 // Redirect if already verified or not logged in
-if (!isset($_SESSION['verify_user_id']) {
+if (!isset($_SESSION['verify_user_id'])) {
     if (isset($_SESSION['id'])) {
         header("Location: login.php");
         exit();
