@@ -1,11 +1,17 @@
 <?php
 session_start();
+
 include 'includes/config.php';
 
 // Initialize variables
 $error = '';
 $b_form = '';
-
+// Show verification success message if set
+$success = '';
+if (isset($_SESSION['verification_success'])) {
+    $success = $_SESSION['verification_success'];
+    unset($_SESSION['verification_success']); // Clear it after showing once
+}
 // Check if user is already logged in
 if (isset($_SESSION['id'])) {
     header("Location: student/dashboard.php");
@@ -83,6 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <h2 class="trust-name text-primary">Al-Hijrah Trust</h2>
                         <p class="text-muted">Sign in to your student account</p>
                     </div>
+                    <?php if (!empty($success)): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <?php echo htmlspecialchars($success); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
 
                     <?php if ($error): ?>
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">

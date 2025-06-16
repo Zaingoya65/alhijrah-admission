@@ -129,7 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Set session and redirect with success message
                 $_SESSION['id'] = $user_id;
                 unset($_SESSION['verify_user_id']);
-                $_SESSION['verification_success'] = "Your account has been successfully verified!";
+                $_SESSION['verification_success'] = "Your account has been verified successfully. Please log in.";
+
                 header("Location: login.php");
                 exit();
             } else {
