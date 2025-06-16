@@ -338,9 +338,14 @@ EOD;
 
                     <!-- Generate Button -->
                     <form method="POST" class="text-center mt-4">
+
                         <button type="submit" name="generate_challan" class="btn btn-primary px-4 py-2">
                             <i class="fas fa-file-download me-2"></i> Generate & Download Challan
                         </button>
+
+                        <a href="payment.php" class="btn btn-success px-sm-4 rounded-4 flex-grow-1">
+            Next<i class="fas fa-arrow-right ms-2"></i>
+        </a>
                     </form>
                 </div>
             </div>
