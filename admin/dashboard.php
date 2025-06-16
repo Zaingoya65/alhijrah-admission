@@ -147,7 +147,10 @@ while ($row = $recent_result->fetch_assoc()) $recent_applications[] = $row;
     </div>
 </div>
 
+<!-- Content before... -->
+
 <!-- Chart JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('statusChart');
@@ -162,7 +165,6 @@ while ($row = $recent_result->fetch_assoc()) $recent_applications[] = $row;
                         borderColor: ['#ffc107', '#28a745', '#dc3545'],
                         borderWidth: 1
                     }]
-                    
                 },
                 options: {
                     responsive: true,
@@ -174,5 +176,6 @@ while ($row = $recent_result->fetch_assoc()) $recent_applications[] = $row;
         }
     });
 </script>
+
 
 <?php include 'includes/admin_footer.php'; ?>
