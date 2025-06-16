@@ -201,7 +201,8 @@ if (!$result) die("Query Error: " . $conn->error);
                             <a href="view_application.php?id=<?php echo $row['user_id']; ?>" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="View">
                                  <i class="fas fa-eye"></i> 
                             </a>
-                            <a href="../student/download_application_form.php?id=<?php echo $row['user_id']; ?>" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Download Application">
+                           <a href="../student/download_application_form.php?user_id=<?php echo $row['user_id']; ?>"
+
                               <i class="fas fa-download"></i>
                             </a>
                             
