@@ -259,11 +259,8 @@ $application = $result->fetch_assoc();
                                     <p class="mb-0 text-muted">Our support team is ready to help you with any questions.</p>
                                 </div>
                                 <div class="ms-md-auto">
-                                    <a href="../support.php" class="btn btn-primary me-2 rounded-3">
+                                    <a href="mailto:  technicalteam@alhijrah.com.pk" class="btn btn-primary me-2 rounded-3">
                                         <i class="fas fa-envelope me-1"></i> Contact Support
-                                    </a>
-                                    <a href="../faq.php" class="btn btn-outline-primary rounded-3">
-                                        <i class="fas fa-question-circle me-1"></i> View FAQs
                                     </a>
                                 </div>
                             </div>
