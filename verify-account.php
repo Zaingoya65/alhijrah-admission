@@ -78,6 +78,8 @@ if (isset($_GET['resend'])) {
     $user_id = $_SESSION['verify_user_id'];
     $new_otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
     $otp_expiry = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+    $verification_token = bin2hex(random_bytes(16)); // 32-character token
+    $verification_token_expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
     
     $sql = "UPDATE registered_users SET otp = ?, otp_expiry = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
@@ -92,7 +94,7 @@ if (isset($_GET['resend'])) {
         $email_result = $email_stmt->get_result();
         $user = $email_result->fetch_assoc();
         $verification_link = "https://moccasin-tiger-993742.hostingersite.com/verify-account.php?token=$verification_token";
-            
+
         if (send_otp_email($user['email'], $new_otp, $verification_link)) {
             $success = "A new verification code has been sent to your email address.";
         } else {
