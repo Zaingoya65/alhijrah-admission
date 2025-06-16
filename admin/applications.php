@@ -177,7 +177,7 @@ if (!$result) die("Query Error: " . $conn->error);
                         <th>Domicile</th>
                         <th>Status</th>
                         <th>Date</th>
-                        <th>Actions</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
