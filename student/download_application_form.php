@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 include '../includes/config.php';
 require_once('../vendor/tecnickcom/tcpdf/tcpdf.php');
 
-if (!isset($_GET['user_id'])) {
+if (!isset($_GET['user_id']) || !isset($_GET['user_id']) ) {
     die("Invalid request: User ID not provided.");
 }
 

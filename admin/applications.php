@@ -202,8 +202,9 @@ if (!$result) die("Query Error: " . $conn->error);
                                  <i class="fas fa-eye"></i> 
                             </a>
                             <a href="../student/download_application_form.php?id=<?php echo $row['user_id']; ?>" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Download Application">
-        <i class="fas fa-download"></i>
-    </a>
+                              <i class="fas fa-download"></i>
+                            </a>
+                            
                         </td>
                     </tr>
                     <?php endwhile; ?>
