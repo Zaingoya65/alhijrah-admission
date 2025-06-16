@@ -267,7 +267,7 @@ include '../includes/stud_header.php';
                                 <a href="status.php" class="btn btn-primary px-4">
                                     <i class="fas fa-search me-2"></i> Check Status
                                 </a>
-                                <a href="../support.php" class="btn btn-outline-secondary px-4">
+                                <a href="mailto: technicalteam@alhijrah.com.pk " class="btn btn-outline-secondary px-4">
                                     <i class="fas fa-question-circle me-2"></i> Get Help
                                 </a>
                             </div>
@@ -309,7 +309,7 @@ include '../includes/stud_header.php';
                                     </div>
                                     <div class="step-content">
                                         <h5>Roll Number Slip</h5>
-                                        <p class="text-muted mb-1">Available 7 days before test</p>
+                                        <p class="text-muted mb-1">Available before test</p>
                                         <p class="mb-0">Download your roll number slip when available.</p>
                                     </div>
                                 </div>
@@ -319,7 +319,7 @@ include '../includes/stud_header.php';
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-info-circle fs-4 me-3"></i>
                                     <div>
-                                        <strong>Important:</strong> The roll number slip will only be available for download 7 days before the test date. 
+                                        <strong>Important:</strong> The roll number slip will be available for download before the test date. 
                                         Make sure to check back regularly.
                                     </div>
                                 </div>
@@ -578,7 +578,7 @@ include '../includes/stud_header.php';
                                             <li>Ensure all information is accurate and complete</li>
                                             <li>You won't be able to edit after submission</li>
                                             <li>Application will be processed within 72 hours</li>
-                                            <li>Roll number slip will be available 7 days before test date</li>
+                                            <li>Roll number slip will be available before test date</li>
                                             <li>Check your application status regularly after submission</li>
                                         </ul>
                                     </div>
