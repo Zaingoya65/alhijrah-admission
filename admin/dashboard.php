@@ -89,8 +89,8 @@ while ($row = $recent_result->fetch_assoc()) $recent_applications[] = $row;
         <div class="col-md-6">
     <div class="card h-100">
         <div class="card-header">Status Chart</div>
-        <div class="card-body position-relative">
-            <div class="chart-container" style="position: relative; height:100%; min-height: 250px;">
+        <div class="card-body p-3"> <!-- Added p-3 for padding -->
+            <div class="chart-container">
                 <canvas id="statusChart"></canvas>
             </div>
         </div>
@@ -151,102 +151,80 @@ while ($row = $recent_result->fetch_assoc()) $recent_applications[] = $row;
 
 <style>
     /* Chart Container Styles */
-.card-body canvas {
-    width: 100% !important;
-    max-width: 100%;
-    height: auto !important;
-    aspect-ratio: 1 / 0.7; /* Maintain aspect ratio */
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .card-body canvas {
-        aspect-ratio: 1 / 1; /* More square on mobile */
+    .chart-container {
+        position: relative;
+        height: 100%;
+        min-height: 200px; /* Reduced from 250px */
         max-height: 300px;
+        margin: 0 auto;
+        width: 100%;
     }
-}
+    
+    #statusChart {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+    }
 
-/* Chart specific styling */
-#statusChart {
-    display: block;
-    margin: 0 auto;
-    transition: all 0.3s ease;
-}
-
-/* Legend styling */
-.chart-legend {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 15px;
-    font-size: 14px;
-}
-
-.chart-legend-item {
-    display: flex;
-    align-items: center;
-    margin: 0 10px 5px;
-}
-
-.chart-legend-color {
-    width: 15px;
-    height: 15px;
-    margin-right: 5px;
-    border-radius: 3px;
-}
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .chart-container {
+            min-height: 180px; /* Smaller on mobile */
+            max-height: 250px;
+        }
+    }
 </style>
 
 <!-- Chart JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('statusChart');
-    if (ctx) {
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Pending', 'Approved', 'Rejected'],
-                datasets: [{
-                    data: [<?= $stats['pending'] ?>, <?= $stats['approved'] ?>, <?= $stats['rejected'] ?>],
-                    backgroundColor: ['#ffc107', '#28a745', '#dc3545'],
-                    borderColor: ['#fff', '#fff', '#fff'],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                aspectRatio: 1.5,
-                plugins: {
-                    legend: { 
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            boxWidth: 15,
-                            font: {
-                                size: 13
+        const ctx = document.getElementById('statusChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pending', 'Approved', 'Rejected'],
+                    datasets: [{
+                        data: [<?= $stats['pending'] ?>, <?= $stats['approved'] ?>, <?= $stats['rejected'] ?>],
+                        backgroundColor: ['#ffc107', '#28a745', '#dc3545'],
+                        borderColor: ['#fff', '#fff', '#fff'],
+                        borderWidth: 1 // Reduced from 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Changed to false for better control
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                padding: 15, // Reduced from 20
+                                boxWidth: 12, // Reduced from 15
+                                font: {
+                                    size: 12 // Reduced from 13
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            titleFont: {
+                                size: 13 // Reduced from 14
+                            },
+                            bodyFont: {
+                                size: 12 // Reduced from 13
                             }
                         }
                     },
-                    tooltip: {
-                        backgroundColor: 'rgba(0,0,0,0.8)',
-                        titleFont: {
-                            size: 14
-                        },
-                        bodyFont: {
-                            size: 13
-                        }
+                    cutout: '60%', // Reduced from 65%
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
                     }
-                },
-                cutout: '65%',
-                animation: {
-                    animateScale: true,
-                    animateRotate: true
                 }
-            }
-        });
-    }
-});
+            });
+        }
+    });
 </script>
 
 
