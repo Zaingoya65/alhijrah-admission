@@ -5,15 +5,10 @@ error_reporting(E_ALL);
 include 'includes/config.php';
 include 'includes/email_functions.php';
 
-// Redirect if already verified or not logged in
-if (!isset($_SESSION['verify_user_id'])) {
-    if (isset($_SESSION['id'])) {
-        header("Location: login.php");
-        exit();
-    } else {
-        header("Location: register.php");
-        exit();
-    }
+// Simplified redirect logic - only check if user shouldn't be here
+if (isset($_SESSION['id']) && !isset($_SESSION['verify_user_id'])) {
+    header("Location: login.php");
+    exit();
 }
 
 $error = '';
@@ -43,9 +38,9 @@ if (isset($_GET['token'])) {
             $update_stmt->bind_param('i', $user['id']);
             $update_stmt->execute();
             
+            // Set session and redirect with success message
             $_SESSION['id'] = $user['id'];
             unset($_SESSION['verify_user_id']);
-            
             $_SESSION['verification_success'] = "Your account has been successfully verified!";
             header("Location: login.php");
             exit();
@@ -129,9 +124,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $update_stmt->bind_param('i', $user_id);
                 $update_stmt->execute();
                 
+                // Set session and redirect with success message
                 $_SESSION['id'] = $user_id;
                 unset($_SESSION['verify_user_id']);
-                
                 $_SESSION['verification_success'] = "Your account has been successfully verified!";
                 header("Location: login.php");
                 exit();
